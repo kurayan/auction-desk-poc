@@ -1,0 +1,9 @@
+{
+  "manifest_version":3,"name":"Auction Desk Connector","version":"0.2.0",
+  "description":"TC-Web・CISのログイン済みChromeから検索・成約比較するPoC。GPT API不要。",
+  "permissions":["storage","tabs","scripting"],
+  "host_permissions":["https://taacaa.jp/*","https://ssl.cis6200.jp/*"],
+  "background":{"service_worker":"worker.js","type":"module"},
+  "action":{"default_popup":"popup.html"},
+  "externally_connectable":{"matches":["https://auction-desk-prototype-261111.leafycycle4.chatgpt.site/*","http://localhost/*"]}
+}

@@ -1,0 +1,15 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {validate,parseTC,parseCIS,compare,comparable,year,grade,dedupe} from '../extension/core.js';
+const config=()=>validate({query:'プリウス',area:'関東',budget:100,km:12,score:4,limit:3,maxPages:3,minComps:3,priceBasis:'vehicle-ex-tax'});
+// Synthetic fixtures, deliberately not exported member/customer records.
+const tc=(status='落札',price='750')=>({head:'ﾌﾟﾘｳｽ / S',cells:['11/12（木） TAA関東','28年 6月','ZVW50 1800','80千km','1F7 ｼﾙﾊﾞｰ','IAT AAC','4 C / C','100',status,price],lot:'10001'});
+const cis=(price='1100',status='落札')=>['26/10/31','10002 USS東京','H28','プリウス ５Ｄ S','IA 1800','82 R10.04','シルバー','ZVW50 AAC ナビ',status,price+' 300','4 (C)'];
+const fixture=()=>{const lot=parseTC([tc('未セリ','')],'listing')[0];const buy=Array.from({length:3},(_,i)=>({...parseTC([tc()],'buy')[0],lot:String(i+10)}));const sell=Array.from({length:3},(_,i)=>({...parseCIS([cis()])[0],lot:String(i+20)}));return {lot,buy,sell}};
+test('TC/CIS normalize units, year and grade without using start price',()=>{const {lot,buy,sell}=fixture();assert.equal(lot.price,null);assert.equal(buy[0].price,750000);assert.equal(sell[0].price,1100000);assert.equal(lot.year,2016);assert.equal(lot.color,'シルバー');assert.equal(lot.grade,sell[0].grade);assert.equal(year('R2'),2020);assert.equal(grade('ﾌﾟﾘｳｽ / S'),'S')});
+test('three matching sold comps on each side qualify a specific lot',()=>{const {lot,buy,sell}=fixture();const r=compare([lot],buy,sell,config());assert.equal(r.ranked.length,1);assert.equal(r.ranked[0].spread,350000);assert.equal(r.ranked[0].lot.lot,'10001')});
+test('unknown tax basis suppresses all spreads and recommendation',()=>{const {lot,buy,sell}=fixture();const r=compare([lot],buy,sell,{...config(),priceBasis:'unknown'});assert.equal(r.ranked.length,0);assert.equal(r.held[0].spread,null)});
+test('duplicates cannot satisfy minimum comps',()=>{const {lot,buy,sell}=fixture();assert.equal(dedupe([buy[0],buy[0]]).length,1);assert.equal(compare([lot],[buy[0],buy[0],buy[0]],sell,config()).ranked.length,0)});
+test('repair grade, missing distance, different model, unsold are excluded',()=>{const {lot,sell}=fixture();for(const change of [{score:'R'},{km:null},{model:'ZVW30'},{status:'other'},{grade:'A'},{color:'黒'}])assert.ok(!comparable(lot,{...sell[0],...change}))});
+test('budget checks high end; overlapping ranges and missing ID stay held',()=>{const {lot,buy,sell}=fixture();assert.equal(compare([lot],[...buy,{...buy[0],lot:'99',price:1010000}],sell,config()).ranked.length,0);assert.equal(compare([{...lot,lot:null}],buy,sell,config()).ranked.length,0);assert.equal(compare([lot],buy,sell.map(r=>({...r,price:700000})),config()).ranked.length,0)});
+test('already sold listing is never a purchase candidate',()=>{const {lot,buy,sell}=fixture();assert.equal(compare([{...lot,status:'sold'}],buy,sell,config()).examined,0)});
+test('out of range conditions reject',()=>{assert.throws(()=>validate({...config(),budget:-1}));assert.throws(()=>validate({...config(),maxPages:100}));assert.throws(()=>validate({...config(),priceBasis:'whatever'}))});

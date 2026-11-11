@@ -1,0 +1,5 @@
+node_modules/
+artifacts/
+market-cache/
+*.log
+.env*
