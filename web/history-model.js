@@ -1,0 +1,30 @@
+const datePattern=/^\d{4}-\d{2}-\d{2}$/;
+export function validDate(s){return typeof s==='string'&&datePattern.test(s)&&!isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s}
+export function japanDate(timestamp){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(timestamp))}
+function string(v,key,max=4000){if(typeof v!=='string'||v.length>max)throw Error(`Invalid ${key}`);return v}
+function money(v,key){if(v!==null&&(!Number.isFinite(v)||v<0))throw Error(`Invalid ${key}`)}
+export function validateReport(r){
+ if(!r||r.schemaVersion!==1||!/^[a-z0-9][a-z0-9-]{0,99}$/.test(r.id))throw Error('Invalid report identity');
+ if(!validDate(r.researchedOn))throw Error('Invalid research date');
+ if(r.researchedAt!==null&&(!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(r.researchedAt)||isNaN(Date.parse(r.researchedAt))||japanDate(r.researchedAt)!==r.researchedOn))throw Error('Research timestamp must match the Japan date');
+ for(const key of ['title','status','summary','provenance'])string(r[key],key);
+ if(!r.title.trim())throw Error('Title is required');
+ if(!r.conditions||Array.isArray(r.conditions)||typeof r.conditions!=='object')throw Error('Invalid conditions');
+ for(const [k,v] of Object.entries(r.conditions)){string(k,'condition key',100);string(v,'condition value',1000)}
+ for(const k of ['limitations','coverage']){if(!Array.isArray(r[k])||r[k].length>200)throw Error(`Invalid ${k}`);r[k].forEach(v=>string(v,k))}
+ if(!Array.isArray(r.candidates)||r.candidates.length>200)throw Error('Invalid candidates');
+ for(const c of r.candidates){
+  for(const k of ['name','venue','lot','auctionDate','vehicle','score','status','reason','nextAction'])string(c[k],k);
+  if(c.rank!==null&&(!Number.isInteger(c.rank)||c.rank<1))throw Error('Invalid rank');
+  for(const k of ['buyLow','buyHigh','sellLow','sellHigh','km'])money(c[k],k);
+  if(c.spread!==null&&!Number.isFinite(c.spread))throw Error('Invalid spread');
+  for(const [low,high] of [['buyLow','buyHigh'],['sellLow','sellHigh']])if((c[low]===null)!==(c[high]===null)||(c[low]!==null&&c[low]>c[high]))throw Error('Invalid range');
+  if(!Array.isArray(c.evidence)||c.evidence.length>1000)throw Error('Invalid evidence');
+  for(const e of c.evidence){for(const k of ['side','date','venue','lot','vehicle','score','note'])string(e[k],k);money(e.price,'price');money(e.km,'km')}
+ }
+ const allowed=new Set(['schemaVersion','id','researchedOn','researchedAt','title','status','summary','conditions','limitations','coverage','candidates','provenance']);
+ if(Object.keys(r).some(k=>!allowed.has(k)))throw Error('Unexpected report field');
+ return r;
+}
+export function sortRuns(runs){return [...runs].sort((a,b)=>b.researchedOn.localeCompare(a.researchedOn)||(Date.parse(b.researchedAt)||0)-(Date.parse(a.researchedAt)||0)||b.id.localeCompare(a.id))}
+export function summarize(r){return {id:r.id,researchedOn:r.researchedOn,researchedAt:r.researchedAt,title:r.title,status:r.status,candidateCount:r.candidates.length}}

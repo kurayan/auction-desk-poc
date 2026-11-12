@@ -1,6 +1,19 @@
 # Auction Desk PoC
 
-Siteの検索ボタンからローカルChrome拡張に調査を依頼する、オークション間の車両価格比較PoC。GPT API・APIキー・別サーバーは不要です。
+主な利用方法は **チャットで調査を依頼 → Siteで結果・日付別履歴を閲覧** です。GPT API・APIキー・別サーバーは不要です。拡張の自動検索PoCは `connector.html` に残しています。
+
+## 調査結果と履歴
+
+[Site](https://auction-desk-prototype-261111.leafycycle4.chatgpt.site) のトップに調査履歴を表示します。日本時間の調査実行日で絞り込み、同じ日に複数回調べた場合も別の記録として残します。各記録は条件・案件・参考成約・保留理由・検索範囲とJSON/CSV出力を含みます。記録日時が残っていない過去ログは日付だけ表示し、時刻を補いません。
+
+チャットでの調査完了時に結果JSONを追加し、Siteを更新する運用です。記録はSiteの配信ファイルと専用ソースに永続保存され、ブラウザの保存領域を消しても失われません。一般コード用のこのGitHubには実際の会員データを格納しません。更新方法・形式は [運用手順](skills/auction-desk-poc/references/chat-history.md) と `web/history-model.js` を参照。
+
+```sh
+node scripts/sync-site.mjs SITE_CHECKOUT
+node scripts/archive-report.mjs REPORT.json SITE_CHECKOUT/dist/history
+```
+
+その後、Sitesの通常の公開手順で反映します。sync-siteは既存履歴を維持します。上書き訂正せず、新IDで記録を追加します。これはチャット作業による公開であり、無人の定期実行ではありません。
 
 **実装済み・実機PoC待ち**：拡張の実装、比較ロジックのテスト、Web接続画面を用意しています。拡張を実際のChromeに読み込んでの通し検証は未完了です。サイト側の画面変更や認証方式によって停止する可能性があります。停止時には理由を表示し、未取得データでランキングを作りません。
 
@@ -10,7 +23,7 @@ Siteの検索ボタンからローカルChrome拡張に調査を依頼する、�
 2. Chromeの拡張機能管理でデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」から `extension` を選びます。
 3. 同じChromeプロファイルでTC-Webへログインします。CISはUSBキーを接続し、ログイン後に「相場検索」を開きます。
 4. 拡張アイコンを開き、拡張IDをコピーします。
-5. [Auction Desk](https://auction-desk-prototype-261111.leafycycle4.chatgpt.site) の接続設定にIDを入力し「接続する」。拡張追加前からSiteを開いていた場合は再読み込みします。
+5. [拡張PoC画面](https://auction-desk-prototype-261111.leafycycle4.chatgpt.site/connector.html) の接続設定にIDを入力し「接続する」。拡張追加前からSiteを開いていた場合は再読み込みします。
 6. 関東／プリウス／上限100万円／TOP3で検索します。両社の価格基準が未確認なら価格差は保留になります。
 7. 検索中はSiteを開いたままにします。認証待ちなら開かれた検索用タブでログインし、Siteの「ログイン後に再開」を押します。
 

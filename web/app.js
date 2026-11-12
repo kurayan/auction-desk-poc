@@ -1,29 +1,55 @@
-const $=s=>document.querySelector(s);let job=null,busy=false,connected=false;
-$('#extensionId').value=localStorage.getItem('auction-extension-id')||'';
-const text=(tag,value)=>{const e=document.createElement(tag);e.textContent=value;return e};
-const yen=n=>n==null?'—':(n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万円';
-async function send(op,extra={}){const id=$('#extensionId').value.trim();if(!/^[a-p]{32}$/.test(id))throw Error('拡張アイコンに表示される32文字のIDを入力してください');if(!globalThis.chrome?.runtime?.sendMessage)throw Error('拡張を読み込んだChromeでこの画面を開いてください');const r=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('拡張との接続がタイムアウトしました')),20000);chrome.runtime.sendMessage(id,{v:1,op,...extra},r=>{clearTimeout(timer);const err=chrome.runtime.lastError;if(err)reject(Error('拡張に接続できません。ID・拡張の有効状態・許可されたSiteを確認してください'));else resolve(r)})});if(!r?.ok)throw Error(r?.error||'応答を確認できません');return r.data}
-function evidence(rows){const table=document.createElement('table'),head=document.createElement('tr');for(const h of ['会場／出品番号','開催日','年式・距離','評価','成約価格'])head.append(text('th',h));table.append(head);for(const r of rows){const tr=document.createElement('tr');for(const v of [`${r.venue} / ${r.lot||'番号未取得'}`,r.auctionDate,`${r.year}年 / ${r.km/10000}万km`,r.score,yen(r.price)])tr.append(text('td',v));table.append(tr)}return table}
-function render(){
- $('#connection').textContent=connected?'拡張接続済み':'拡張未接続';$('#connection').classList.toggle('connected',connected);
- $('#start').disabled=!connected||job?.status==='running';$('#resume').disabled=!connected||job?.status!=='paused';$('#cancel').disabled=!connected||!['running','paused'].includes(job?.status);$('#export').disabled=$('#csv').disabled=!job?.result;
- $('#status').textContent=job?.message||'接続後、検索を開始できます。';$('#counts').textContent=job?`出品 ${job.lots.length} / 仕入れ成約 ${job.buy.length} / USS成約 ${job.sell.length}`:'まだ検索していません';
- $('#results').replaceChildren();$('#held').replaceChildren();$('#coverage').replaceChildren();$('#resultCount').textContent=job?.result?`${job.result.ranked.length} 件`:'—';
- if(!job?.result)$('#results').append(text('p','検索完了後、根拠を確認できる候補を表示します。'));
- else if(!job.result.ranked.length)$('#results').append(text('p','根拠の揃った候補は0件です。保留理由と取得範囲をご確認ください。'));
- for(const [i,r] of (job?.result?.ranked||[]).entries()){
-  const card=text('article','');card.className='card';card.append(text('h3',`${i+1}. ${r.lot.name} / ${r.lot.model}`),text('p',`${r.lot.venue}　${r.lot.auctionDate}　出品番号 ${r.lot.lot}　${r.lot.year}年 / ${r.lot.km/10000}万km / 評価 ${r.lot.score}`));
-  const metrics=document.createElement('div');metrics.className='metrics';for(const [label,value] of [['仕入れ中央値',r.buy.median],['USS中央値',r.sell.median],['価格差（諸経費前）',r.spread]]){const m=document.createElement('div');m.append(text('span',label),text('strong',yen(value)));metrics.append(m)}card.append(metrics,text('p',`仕入れ上側と売却下側の差：${yen(r.conservative)}。${r.inspection}`));const d=document.createElement('details');d.append(text('summary',`比較根拠：仕入れ ${r.buy.n}件 / USS ${r.sell.n}件`),evidence(r.buyEvidence),evidence(r.sellEvidence));card.append(d);$('#results').append(card);
+import {validateReport,sortRuns} from './history-model.js';
+const $=s=>document.querySelector(s);
+const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value??'';if(cls)e.className=cls;return e};
+const yen=n=>n==null?'未算定':(n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万円';
+let runs=[],selected=null,request=0;
+const range=(a,b)=>a==null?'未算定':a===b||b==null?yen(a):`${yen(a)} ～ ${yen(b)}`;
+async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(`記録を読み込めません (${r.status})`);return r.json()}
+function drawList(){
+ const filtered=runs.filter(r=>!$('#dateFilter').value||r.researchedOn===$('#dateFilter').value);
+ $('#historyCount').textContent=`${runs.length}件`;
+ $('#historyList').replaceChildren();let day='';
+ for(const r of filtered){
+  if(day!==r.researchedOn){day=r.researchedOn;$('#historyList').append(text('h3',day.replaceAll('-',' / '),'day'))}
+  const button=document.createElement('button');button.className='historyItem'+(selected?.id===r.id?' selected':'');button.setAttribute('aria-pressed',String(selected?.id===r.id));
+  button.append(text('strong',r.title),text('span',`${r.status} · ${r.candidateCount}案件`),text('small',r.researchedAt?new Date(r.researchedAt).toLocaleTimeString('ja-JP',{timeZone:'Asia/Tokyo'}):'実行時刻の記録なし'));
+  button.onclick=()=>openReport(r.id);$('#historyList').append(button);
  }
- for(const r of job?.result?.held||[])$('#held').append(text('p',`${r.lot.venue} / ${r.lot.lot||'番号未取得'} / ${r.lot.name}：${r.reason.join('、')}`));
- for(const c of job?.coverage||[])$('#coverage').append(text('div',`${c.source}　${c.query}　${c.page}ページ　${c.count}件　${new Date(c.at).toLocaleString('ja-JP')}`));
+ if(!filtered.length)$('#historyList').append(text('p','この日付の調査記録はありません。','empty'));
 }
-async function action(fn){if(busy)return;busy=true;try{await fn();render()}catch(e){$('#status').textContent=e.message}finally{busy=false}}
-$('#connect').onclick=()=>action(async()=>{const r=await send('ping');connected=true;localStorage.setItem('auction-extension-id',$('#extensionId').value.trim());job=r.job});
-$('#search').onsubmit=e=>{e.preventDefault();action(async()=>{job=await send('start',{params:Object.fromEntries(new FormData(e.target))})})};
-for(const op of ['resume','cancel','clear'])$('#'+op).onclick=()=>action(async()=>{job=await send(op)});
-setInterval(()=>{if(connected&&job?.status==='running')action(async()=>{job=await send('tick')})},2200);
+function table(rows){
+ const wrap=document.createElement('div');wrap.className='tablewrap';const t=document.createElement('table');const head=document.createElement('tr');
+ for(const h of ['区分','開催日','会場・番号','車両条件','走行 / 評価','成約価格','条件差・注意点'])head.append(text('th',h));t.append(head);
+ for(const r of rows){const tr=document.createElement('tr');for(const v of [r.side,r.date||'日付未記録',`${r.venue||''} / ${r.lot||'番号未記録'}`,r.vehicle||'',`${r.km==null?'不明':(r.km/10000)+'万km'} / ${r.score||'不明'}`,yen(r.price),r.note||''])tr.append(text('td',v));t.append(tr)}
+ wrap.append(t);return wrap;
+}
+function renderReport(r){
+ $('#report').hidden=false;$('#reportTitle').textContent=r.title;$('#reportDate').textContent=`調査実行日 ${r.researchedOn}（日本時間） · ${r.status}`;$('#reportSummary').textContent=r.summary;
+ $('#conditions').replaceChildren();for(const [k,v] of Object.entries(r.conditions))$('#conditions').append(text('span',`${k}：${v}`));
+ $('#limitations').replaceChildren(text('strong','記録上の未確認事項'));for(const l of r.limitations)$('#limitations').append(text('p',l));$('#limitations').hidden=!r.limitations.length;
+ $('#candidateCount').textContent=`${r.candidates.length}件`;$('#candidates').replaceChildren();
+ if(!r.candidates.length)$('#candidates').append(text('p','案件が確定していない調査記録です。','empty'));
+ for(const c of r.candidates){
+  const card=document.createElement('article');card.className='card';card.append(text('h3',`${c.rank?c.rank+'. ':''}${c.name}`),text('p',`${c.venue} / 出品番号 ${c.lot||'未記録'} / 開催日 ${c.auctionDate||'未記録'}`),text('p',`${c.vehicle||''} · ${c.km==null?'走行不明':(c.km/10000)+'万km'} · 評価 ${c.score||'未確認'}`),text('span',c.status,'badge'));
+  const metrics=document.createElement('div');metrics.className='metrics';
+  for(const [label,value] of [['仕入れ参考成約',range(c.buyLow,c.buyHigh)],['売却参考成約',range(c.sellLow,c.sellHigh)],['価格差（諸経費前）',yen(c.spread)]]){const m=document.createElement('div');m.append(text('span',label),text('strong',value));metrics.append(m)}
+  card.append(metrics,text('p',c.reason),text('p',c.nextAction));
+  const detail=document.createElement('details');detail.append(text('summary',`根拠となる成約 ${c.evidence.length}件`));detail.append(c.evidence.length?table(c.evidence):text('p','この案件に紐づく成約個票は保存されていません。'));card.append(detail);$('#candidates').append(card);
+ }
+ $('#coverage').replaceChildren();for(const s of r.coverage)$('#coverage').append(text('p',s));
+ $('#provenance').textContent=r.provenance||'';
+}
+async function openReport(id){
+ const n=++request;$('#loadStatus').textContent='記録を読み込んでいます…';$('#report').hidden=true;
+ try{if(!runs.some(r=>r.id===id))throw Error('指定された調査記録が見つかりません');const r=validateReport(await json(`./history/${encodeURIComponent(id)}.json`));if(n!==request)return;if(r.id!==id)throw Error('記録IDが一致しません');selected=r;renderReport(r);drawList();history.replaceState(null,'','#run='+encodeURIComponent(id));$('#loadStatus').textContent='保存済みの調査結果です。新しい調査はチャットで依頼してください。'}catch(e){if(n===request){selected=null;$('#report').hidden=true;$('#loadStatus').textContent=e.message;drawList()}}
+}
+async function load(){
+ $('#refresh').disabled=true;
+ try{const index=await json('./history/index.json');if(!Array.isArray(index.runs))throw Error('履歴一覧の形式を確認できません');runs=sortRuns(index.runs);drawList();const id=new URLSearchParams(location.hash.slice(1)).get('run')||runs[0]?.id;if(id)await openReport(id);else{$('#loadStatus').textContent='まだ調査記録はありません。チャットで調査を依頼してください。';$('#report').hidden=true}}catch(e){$('#loadStatus').textContent=e.message}finally{$('#refresh').disabled=false}
+}
+function filterHistory(){const visible=runs.filter(r=>!$('#dateFilter').value||r.researchedOn===$('#dateFilter').value);drawList();if(!selected||!visible.some(r=>r.id===selected.id)){request++;selected=null;$('#report').hidden=true;if(visible[0])openReport(visible[0].id);else $('#loadStatus').textContent='この日付の調査記録はありません。'}}
+$('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{$('#dateFilter').value='';filterHistory()};$('#refresh').onclick=load;
 function download(data,type,name){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-$('#export').onclick=()=>download(JSON.stringify(job,null,2),'application/json',`auction-${job.id}.json`);
-$('#csv').onclick=()=>{const rows=[['判定','会場','開催日','出品番号','車名','型式','仕入れ中央値円','USS中央値円','差額円','理由'],...[...job.result.ranked,...job.result.held].map(r=>[r.status,r.lot.venue,r.lot.auctionDate,r.lot.lot,r.lot.name,r.lot.model,r.buy?.median,r.sell?.median,r.spread,r.reason.join(' / ')])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`auction-${job.id}.csv`)};
-render();if($('#extensionId').value)$('#connect').click();
+$('#json').onclick=()=>{if(selected)download(JSON.stringify(selected,null,2),'application/json',`${selected.id}.json`)};
+$('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','理由'],...selected.candidates.map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
+load();

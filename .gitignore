@@ -3,3 +3,5 @@ artifacts/
 market-cache/
 *.log
 .env*
+web/history/
+research-records/
