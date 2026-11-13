@@ -19,7 +19,7 @@ function drawList(){
 }
 function table(rows){
  const wrap=document.createElement('div');wrap.className='tablewrap';const t=document.createElement('table');const head=document.createElement('tr');
- for(const h of ['区分','開催日','会場・番号','車両条件','走行 / 評価','成約価格','条件差・注意点'])head.append(text('th',h));t.append(head);
+ for(const h of ['区分','開催日','会場・番号','車両条件','走行 / 評価','価格（区分参照）','条件差・注意点'])head.append(text('th',h));t.append(head);
  for(const r of rows){const tr=document.createElement('tr');for(const v of [r.side,r.date||'日付未記録',`${r.venue||''} / ${r.lot||'番号未記録'}`,r.vehicle||'',`${r.km==null?'不明':(r.km/10000)+'万km'} / ${r.score||'不明'}`,yen(r.price),r.note||''])tr.append(text('td',v));t.append(tr)}
  wrap.append(t);return wrap;
 }
@@ -31,10 +31,14 @@ function renderReport(r){
  if(!r.candidates.length)$('#candidates').append(text('p','案件が確定していない調査記録です。','empty'));
  for(const c of r.candidates){
   const card=document.createElement('article');card.className='card';card.append(text('h3',`${c.rank?c.rank+'. ':''}${c.name}`),text('p',`${c.venue} / 出品番号 ${c.lot||'未記録'} / 開催日 ${c.auctionDate||'未記録'}`),text('p',`${c.vehicle||''} · ${c.km==null?'走行不明':(c.km/10000)+'万km'} · 評価 ${c.score||'未確認'}`),text('span',c.status,'badge'));
+  if(c.sourceUrl){const a=text('a',`${c.name}の出品票を開く ↗`);a.href=c.sourceUrl;a.target='_blank';a.rel='noopener noreferrer';const p=text('p','');p.append(a,text('small','　TC-Webへのログインが必要です'));card.append(p)}
+  if(c.estimate)card.append(text('p',c.estimate.note,'notice'));
   const metrics=document.createElement('div');metrics.className='metrics';
-  for(const [label,value] of [['仕入れ参考成約',range(c.buyLow,c.buyHigh)],['売却参考成約',range(c.sellLow,c.sellHigh)],['価格差（諸経費前）',yen(c.spread)]]){const m=document.createElement('div');m.append(text('span',label),text('strong',value));metrics.append(m)}
+  const values=c.estimate?[['暫定仕入れ（中央値）',yen(c.estimate.buy)],['暫定売却（中央値）',yen(c.estimate.sell)],['暫定差額（諸経費・修理費前）',yen(c.spread)]]:[['仕入れ参考成約',range(c.buyLow,c.buyHigh)],['売却参考成約',range(c.sellLow,c.sellHigh)],['価格差（諸経費前）',yen(c.spread)]];
+  for(const [label,value] of values){const m=document.createElement('div');m.append(text('span',label),text('strong',value));metrics.append(m)}
+  if(c.estimate)card.append(text('p',`採用事例の幅：仕入れ ${range(c.buyLow,c.buyHigh)} ／ 売却 ${range(c.sellLow,c.sellHigh)}。予測の保証範囲ではありません。`));
   card.append(metrics,text('p',c.reason),text('p',c.nextAction));
-  const detail=document.createElement('details');detail.append(text('summary',`根拠となる成約 ${c.evidence.length}件`));detail.append(c.evidence.length?table(c.evidence):text('p','この案件に紐づく成約個票は保存されていません。'));card.append(detail);$('#candidates').append(card);
+  const detail=document.createElement('details');detail.append(text('summary',`出品情報・比較根拠 ${c.evidence.length}件`));detail.append(c.evidence.length?table(c.evidence):text('p','この案件に紐づく比較根拠は保存されていません。'));card.append(detail);$('#candidates').append(card);
  }
  $('#coverage').replaceChildren();for(const s of r.coverage)$('#coverage').append(text('p',s));
  $('#provenance').textContent=r.provenance||'';
@@ -51,5 +55,5 @@ function filterHistory(){const visible=runs.filter(r=>!$('#dateFilter').value||r
 $('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{$('#dateFilter').value='';filterHistory()};$('#refresh').onclick=load;
 function download(data,type,name){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('#json').onclick=()=>{if(selected)download(JSON.stringify(selected,null,2),'application/json',`${selected.id}.json`)};
-$('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','理由'],...selected.candidates.map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
+$('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','暫定仕入円','暫定売却円','暫定条件','出品票URL','理由'],...selected.candidates.map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.estimate?.buy,c.estimate?.sell,c.estimate?.note,c.sourceUrl,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
 load();

@@ -15,6 +15,8 @@ export function validateReport(r){
  if(!Array.isArray(r.candidates)||r.candidates.length>200)throw Error('Invalid candidates');
  for(const c of r.candidates){
   for(const k of ['name','venue','lot','auctionDate','vehicle','score','status','reason','nextAction'])string(c[k],k);
+  if(c.sourceUrl!==undefined){const u=new URL(string(c.sourceUrl,'sourceUrl'));if(u.protocol!=='https:'||u.username||u.password)throw Error('Invalid source URL')}
+  if(c.estimate!==undefined){if(c.estimate.kind!=='provisional')throw Error('Invalid estimate type');for(const k of ['buy','sell']){money(c.estimate[k],k);if(c.estimate[k]===null)throw Error('Estimate required')}string(c.estimate.note,'estimate note');if(Math.abs(c.spread-(c.estimate.sell-c.estimate.buy))>0.01||c.spread===null)throw Error('Estimate spread mismatch')}
   if(c.rank!==null&&(!Number.isInteger(c.rank)||c.rank<1))throw Error('Invalid rank');
   for(const k of ['buyLow','buyHigh','sellLow','sellHigh','km'])money(c[k],k);
   if(c.spread!==null&&!Number.isFinite(c.spread))throw Error('Invalid spread');
