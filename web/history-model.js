@@ -28,5 +28,5 @@ export function validateReport(r){
  if(Object.keys(r).some(k=>!allowed.has(k)))throw Error('Unexpected report field');
  return r;
 }
-export function sortRuns(runs){return [...runs].sort((a,b)=>b.researchedOn.localeCompare(a.researchedOn)||(Date.parse(b.researchedAt)||0)-(Date.parse(a.researchedAt)||0)||b.id.localeCompare(a.id))}
+export function sortRuns(runs){return [...runs].sort((a,b)=>b.researchedOn.localeCompare(a.researchedOn)||(Date.parse(b.researchedAt)||0)-(Date.parse(a.researchedAt)||0)||(Date.parse(b.archivedAt)||0)-(Date.parse(a.archivedAt)||0)||b.id.localeCompare(a.id))}
 export function summarize(r){return {id:r.id,researchedOn:r.researchedOn,researchedAt:r.researchedAt,title:r.title,status:r.status,candidateCount:r.candidates.length}}

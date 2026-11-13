@@ -15,7 +15,7 @@ export async function archiveReport(report,directory){
   if(previous!==null&&previous!==serialized)throw Error('Existing report is immutable. Use a new run ID for a correction.');
   if(previous===null)await writeFile(target,serialized,{flag:'wx'});
   // Retrying an identical record also repairs a missing index entry after an interrupted write.
-  const runs=sortRuns([...index.runs.filter(r=>r.id!==report.id),summarize(report)]);
+  const runs=sortRuns([...index.runs.filter(r=>r.id!==report.id),{...summarize(report),archivedAt:index.runs.find(r=>r.id===report.id)?.archivedAt||new Date().toISOString()}]);
   await writeFile(temp,JSON.stringify({schemaVersion:1,runs},null,2)+'\n');await rename(temp,indexPath);
   return {id:report.id,count:runs.length,file:target};
  }finally{await lock.close();await unlink(lockPath);await unlink(temp).catch(e=>{if(e.code!=='ENOENT')throw e})}

@@ -1,11 +1,14 @@
 import {validateReport,sortRuns} from './history-model.js';
 const $=s=>document.querySelector(s);
+const archive=document.body.dataset.page==='archive';
+if(!archive&&location.hash.startsWith('#run='))location.replace('./archive.html'+location.hash);
 const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value??'';if(cls)e.className=cls;return e};
 const yen=n=>n==null?'未算定':(n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万円';
 let runs=[],selected=null,request=0;
 const range=(a,b)=>a==null?'未算定':a===b||b==null?yen(a):`${yen(a)} ～ ${yen(b)}`;
 async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(`記録を読み込めません (${r.status})`);return r.json()}
 function drawList(){
+ if(!archive)return;
  const filtered=runs.filter(r=>!$('#dateFilter').value||r.researchedOn===$('#dateFilter').value);
  $('#historyCount').textContent=`${runs.length}件`;
  $('#historyList').replaceChildren();let day='';
@@ -45,14 +48,14 @@ function renderReport(r){
 }
 async function openReport(id){
  const n=++request;$('#loadStatus').textContent='記録を読み込んでいます…';$('#report').hidden=true;
- try{if(!runs.some(r=>r.id===id))throw Error('指定された調査記録が見つかりません');const r=validateReport(await json(`./history/${encodeURIComponent(id)}.json`));if(n!==request)return;if(r.id!==id)throw Error('記録IDが一致しません');selected=r;renderReport(r);drawList();history.replaceState(null,'','#run='+encodeURIComponent(id));$('#loadStatus').textContent='保存済みの調査結果です。新しい調査はチャットで依頼してください。'}catch(e){if(n===request){selected=null;$('#report').hidden=true;$('#loadStatus').textContent=e.message;drawList()}}
+ try{if(!runs.some(r=>r.id===id))throw Error('指定された調査記録が見つかりません');const r=validateReport(await json(`./history/${encodeURIComponent(id)}.json`));if(n!==request)return;if(r.id!==id)throw Error('記録IDが一致しません');selected=r;renderReport(r);drawList();if(archive)history.replaceState(null,'','#run='+encodeURIComponent(id));$('#loadStatus').textContent='保存済みの調査結果です。新しい調査はチャットで依頼してください。'}catch(e){if(n===request){selected=null;$('#report').hidden=true;$('#loadStatus').textContent=e.message;drawList()}}
 }
 async function load(){
  $('#refresh').disabled=true;
- try{const index=await json('./history/index.json');if(!Array.isArray(index.runs))throw Error('履歴一覧の形式を確認できません');runs=sortRuns(index.runs);drawList();const id=new URLSearchParams(location.hash.slice(1)).get('run')||runs[0]?.id;if(id)await openReport(id);else{$('#loadStatus').textContent='まだ調査記録はありません。チャットで調査を依頼してください。';$('#report').hidden=true}}catch(e){$('#loadStatus').textContent=e.message}finally{$('#refresh').disabled=false}
+ try{const index=await json('./history/index.json');if(!Array.isArray(index.runs))throw Error('履歴一覧の形式を確認できません');runs=sortRuns(index.runs);drawList();const id=(archive?new URLSearchParams(location.hash.slice(1)).get('run'):null)||runs[0]?.id;if(id)await openReport(id);else{$('#loadStatus').textContent='まだ調査記録はありません。チャットで調査を依頼してください。';$('#report').hidden=true}}catch(e){$('#loadStatus').textContent=e.message}finally{$('#refresh').disabled=false}
 }
 function filterHistory(){const visible=runs.filter(r=>!$('#dateFilter').value||r.researchedOn===$('#dateFilter').value);drawList();if(!selected||!visible.some(r=>r.id===selected.id)){request++;selected=null;$('#report').hidden=true;if(visible[0])openReport(visible[0].id);else $('#loadStatus').textContent='この日付の調査記録はありません。'}}
-$('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{$('#dateFilter').value='';filterHistory()};$('#refresh').onclick=load;
+if(archive){$('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{$('#dateFilter').value='';filterHistory()}}$('#refresh').onclick=load;
 function download(data,type,name){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('#json').onclick=()=>{if(selected)download(JSON.stringify(selected,null,2),'application/json',`${selected.id}.json`)};
 $('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','暫定仕入円','暫定売却円','暫定条件','出品票URL','理由'],...selected.candidates.map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.estimate?.buy,c.estimate?.sell,c.estimate?.note,c.sourceUrl,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
