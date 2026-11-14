@@ -23,7 +23,15 @@ function drawList(){
 function table(rows){
  const wrap=document.createElement('div');wrap.className='tablewrap';const t=document.createElement('table');const head=document.createElement('tr');
  for(const h of ['区分','開催日','会場・番号','車両条件','走行 / 評価','価格（区分参照）','条件差・注意点'])head.append(text('th',h));t.append(head);
- for(const r of rows){const tr=document.createElement('tr');for(const v of [r.side,r.date||'日付未記録',`${r.venue||''} / ${r.lot||'番号未記録'}`,r.vehicle||'',`${r.km==null?'不明':(r.km/10000)+'万km'} / ${r.score||'不明'}`,yen(r.price),r.note||''])tr.append(text('td',v));t.append(tr)}
+ for(const r of rows){
+  const tr=document.createElement('tr');
+  for(const v of [r.side,r.date||'日付未記録',`${r.venue||''} / ${r.lot||'番号未記録'}`,r.vehicle||'',`${r.km==null?'不明':(r.km/10000)+'万km'} / ${r.score||'不明'}`,yen(r.price),r.note||''])tr.append(text('td',v));
+  if(r.side==='今回の出品（開始価格）'&&r.venue?.includes('TAA')){
+   const link=text('a','TAAの出品情報を開く ↗');link.href='https://taacaa.jp/app/preinspection/CarMakerSelect.do';link.target='_blank';link.rel='noopener noreferrer';
+   tr.firstElementChild.append(document.createElement('br'),link,document.createElement('br'),text('small','TC-Webで会場・出品番号を指定'));
+  }
+  t.append(tr);
+ }
  wrap.append(t);return wrap;
 }
 function renderReport(r){
