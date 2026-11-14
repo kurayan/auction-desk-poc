@@ -37,13 +37,13 @@ function table(rows){
 }
 function renderReport(r){
  if($('#latestResearchDate'))$('#latestResearchDate').textContent=`｜調査日 ${r.researchedOn.replaceAll('-','/')}（日本時間）`;
- $('#report').hidden=false;$('#reportTitle').textContent=r.title;$('#reportDate').textContent=`調査実行日 ${r.researchedOn}（日本時間） · ${r.status}`;$('#reportSummary').textContent=r.summary;
- $('#conditions').replaceChildren();for(const [k,v] of Object.entries(r.conditions))$('#conditions').append(text('span',`${k}：${v}`));
+ $('#report').hidden=false;$('#reportTitle').textContent=r.title;$('#reportDate').textContent=`調査実行日 ${r.researchedOn}（日本時間） · ${r.status}`;$('#reportSummary').textContent='調査時の要約：'+r.summary;
+ $('#conditions').replaceChildren();for(const [k,v] of Object.entries(r.conditions))$('#conditions').append(text('span',`${k==='表示'?'当時の表示条件':k}：${v}`));
  $('#limitations').replaceChildren(text('strong','記録上の未確認事項'));for(const l of r.limitations)$('#limitations').append(text('p',l));$('#limitations').hidden=!r.limitations.length;
  $('#candidateCount').textContent=`${visibleCandidates(r.candidates).length}件（調査済み ${r.candidates.length}件）`;$('#candidates').replaceChildren();
- if(!visibleCandidates(r.candidates).length)$('#candidates').append(text('p','差額0円以上と算定できた案件はありません。マイナス・未算定の案件は表示していません。','empty'));
- for(const c of visibleCandidates(r.candidates)){
-  const card=document.createElement('article');card.className='card';card.append(text('h3',`${c.rank?c.rank+'. ':''}${c.name}`),text('p',`${c.venue} / 出品番号 ${c.lot||'未記録'} / 開催日 ${c.auctionDate||'未記録'}`),text('p',`${c.vehicle||''} · ${c.km==null?'走行不明':(c.km/10000)+'万km'} · 評価 ${c.score||'未確認'}`),text('span',c.status,'badge'));
+ if(!visibleCandidates(r.candidates).length)$('#candidates').append(text('p','差額を算定できた案件はありません。未算定案件は記録JSONに保留として保存しています。','empty'));
+ for(const [position,c] of visibleCandidates(r.candidates).entries()){
+  const card=document.createElement('article');card.className='card';card.append(text('h3',`${position+1}. ${c.name}`),text('p',`${c.venue} / 出品番号 ${c.lot||'未記録'} / 開催日 ${c.auctionDate||'未記録'}`),text('p',`${c.vehicle||''} · ${c.km==null?'走行不明':(c.km/10000)+'万km'} · 評価 ${c.score||'未確認'}`),text('span',c.status==='参考試算・表示対象外'?'参考試算・差額マイナス':c.status,'badge'));
   if(c.sourceUrl){const a=text('a',`${c.name}の出品票を開く ↗`);a.href=c.sourceUrl;a.target='_blank';a.rel='noopener noreferrer';const p=text('p','');p.append(a,text('small','　TC-Webへのログインが必要です'));card.append(p)}
   if(c.estimate)card.append(text('p',c.estimate.note,'notice'));
   const metrics=document.createElement('div');metrics.className='metrics';
