@@ -36,6 +36,7 @@ function table(rows){
  wrap.append(t);return wrap;
 }
 function renderReport(r){
+ if($('#latestResearchDate'))$('#latestResearchDate').textContent=`｜調査日 ${r.researchedOn.replaceAll('-','/')}（日本時間）`;
  $('#report').hidden=false;$('#reportTitle').textContent=r.title;$('#reportDate').textContent=`調査実行日 ${r.researchedOn}（日本時間） · ${r.status}`;$('#reportSummary').textContent=r.summary;
  $('#conditions').replaceChildren();for(const [k,v] of Object.entries(r.conditions))$('#conditions').append(text('span',`${k}：${v}`));
  $('#limitations').replaceChildren(text('strong','記録上の未確認事項'));for(const l of r.limitations)$('#limitations').append(text('p',l));$('#limitations').hidden=!r.limitations.length;
@@ -56,6 +57,7 @@ function renderReport(r){
  $('#provenance').textContent=r.provenance||'';
 }
 async function openReport(id){
+ if($('#latestResearchDate'))$('#latestResearchDate').textContent='';
  const n=++request;$('#loadStatus').textContent='記録を読み込んでいます…';$('#report').hidden=true;
  try{if(!runs.some(r=>r.id===id))throw Error('指定された調査記録が見つかりません');const r=validateReport(await json(`./history/${encodeURIComponent(id)}.json`));if(n!==request)return;if(r.id!==id)throw Error('記録IDが一致しません');selected=r;renderReport(r);drawList();if(archive)history.replaceState(null,'','#run='+encodeURIComponent(id));$('#loadStatus').textContent='保存済みの調査結果です。新しい調査はチャットで依頼してください。'}catch(e){if(n===request){selected=null;$('#report').hidden=true;$('#loadStatus').textContent=e.message;drawList()}}
 }
