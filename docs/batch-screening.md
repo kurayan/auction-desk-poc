@@ -1,6 +1,6 @@
 # 全件一次判定
 
-チャット調査用のオフライン処理。GPT API・ブラウザ操作・通信なし。全件を `calculated`（算定済み）、`excluded`（対象外）、`insufficient`（成約または項目不足）へ振り分け、全件台帳と追加確認キューを保存する。既存拡張のプリウス限定PoCとは独立。
+チャット調査用のオフライン処理。GPT API・ブラウザ操作・通信なし。全件を `calculated`（算定済み）、`excluded`（対象外）、`insufficient`（成約または項目不足）へ振り分け、全件台帳と追加確認キューを保存する。これが現行の調査判定処理。
 
 ```sh
 node scripts/import-cis-cache.mjs CAPTURE.json CACHE.json

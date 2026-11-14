@@ -3,7 +3,7 @@
 ## 必要なもの
 リポジトリ全体をcloneし、Node.js 20以上を用意する（追加npm依存なし）。`skills/auction-desk-poc` と `skills/uss-market-search` を移行先のスキル保存先へ登録する。スキルを単独コピーしても判定コードは付属しないため、リポジトリの場所を移行先のチャットに伝える。文書内の `scripts/` `lib/` `web/` `docs/` はリポジトリルート基準。
 
-ブラウザ操作ツール、ログイン済みChrome、TC-Web/JUの契約、CIS USBキーと対応ローカル環境が必要。ブラウザID・タブID・Cookie・USB認証は移行しない。移行先で利用可能なブラウザを発見しログインする。CISは相場検索まで到達したことを確認。GPT APIは不要。Chrome拡張の自動PoCは任意で、チャット調査とは別経路。
+ブラウザ操作ツール、ログイン済みChrome、TC-Web/JUの契約、CIS USBキーと対応ローカル環境が必要。ブラウザID・タブID・Cookie・USB認証は移行しない。移行先で利用可能なブラウザを発見しログインする。CISは相場検索まで到達したことを確認。GPT APIは不要。旧Chrome拡張は現行運用には使わない。
 
 Site公開には移行先のSites接続と対象Siteへの編集権限が必要。既存Siteを引き継ぐ場合は接続ツールで取得し、source helperで専用ソースを開いてから更新する。既存の共有範囲を維持する。権限がない場合は所有者の設定が必要で、別Siteへ会員データを自動転送しない。Sheets納品にはGoogle Drive/Sheets接続が別途必要。
 
@@ -29,10 +29,10 @@ node --test tests/*.test.mjs
 
 ## ハードコードと変更箇所
 - `lib/batch-screen.js`: 乗用車名allowlist、商用車判定、予算・鮮度・類似条件、車種重複なしTOP5。未知車種は保留。車名allowlistは全車種網羅ではない。
-- `extension/core.js`: 全半角・年式・会場名の正規化と統計。拡張用の判定とバッチ判定は異なる。
+- `extension/core.js`: 全半角・年式・会場名の正規化と統計。旧拡張用判定は現行調査では使用しない。
 - `scripts/import-cis-cache.mjs`, `scripts/merge-captured-comps.mjs`: 表の列位置と単位。レイアウト変更時は標本照合してから更新。
 - `web/history-model.js`, `scripts/archive-report.mjs`: 履歴形式・上書き防止。Site専用ソースに実データを保存。
-- `extension/manifest.json`, `extension/worker.js`, `extension/popup.html`: 拡張PoCの接続先origin。Site移転時のみ揃えて変更。
+- `extension/` と `web/connector.html`: 旧試験実装。移行先で起動・配布しない。現行バッチが参照する core.js は保持する。
 
 グレード略記の個別対応は汎用ルールへ自動昇格しない。今回のFC26 Vセレク対応は暫定で、キャッシュの原表記と対応理由を維持して再確認する。
 
