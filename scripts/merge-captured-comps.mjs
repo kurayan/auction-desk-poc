@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import {norm,year} from '../extension/core.js';
+const [capture,existing,cis,output]=process.argv.slice(2);
+if(!capture||!existing||!cis||!output)throw Error('Usage: node scripts/merge-captured-comps.mjs CAPTURE EXISTING CIS OUTPUT');
+const read=f=>JSON.parse(fs.readFileSync(f,'utf8').replace(/^\uFEFF/,''));
+const data=read(capture),old=read(existing).comps,sell=read(cis).comps;
+if(!Array.isArray(old)||!Array.isArray(sell)||!Array.isArray(data.tc))throw Error('Invalid cache structure');
+for(const g of data.tc)for(const r of g.rows||[])if(r.cells?.length!==16||!/^\d{16}$/.test(r.recordKey||''))throw Error('Unsupported TC text row or record identifier');
+const buy=data.tc.flatMap(g=>g.rows.map(r=>{const c=r.cells.map(norm),id=r.recordKey;const m=c[6];return {side:'buy',market:'TC-Web',period:'past4weeks',lot:'TC識別:'+id,auctionDate:id.slice(0,4)+'-'+id.slice(4,6)+'-'+id.slice(6,8),venue:c[14],name:c[2],grade:c[3],model:c[4],year:year(c[1]),km:/^\d+$/.test(m)?Number(m)*1000:null,mileageFlag:/^\d+$/.test(m)?null:m,score:c[11],status:c[12]==='落'?'sold':'other',price:/^[\d,]+$/.test(c[13])?Number(c[13].replaceAll(',',''))*1000:null,priceBasis:'unknown',color:c[7],observedAt:g.observedAt,provenance:{query:g.query,recordKey:id,identityNote:'画面の成約レコード識別子。出品番号とは区別。',raw:r.cells}}}));
+fs.writeFileSync(output,JSON.stringify({comps:[...old,...sell,...buy]},null,2));console.log({old:old.length,sell:sell.length,buy:buy.length});

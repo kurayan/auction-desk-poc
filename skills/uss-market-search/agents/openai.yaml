@@ -1,0 +1,3 @@
+interface:
+  display_name: "USS過去相場検索"
+  short_description: "ChromeのCISから過去出品と落札結果を検索し比較用に整理"

@@ -2,11 +2,11 @@
 
 主な利用方法は **チャットで調査を依頼 → Siteで結果・日付別履歴を閲覧** です。GPT API・APIキー・別サーバーは不要です。拡張の自動検索PoCは `connector.html` に残しています。
 
-全件の一次判定は [バッチ処理](docs/batch-screening.md) を使います。保存済み一覧・相場から、算定済み／対象外／不足を全件記録し、不足条件をまとめて追加調査できます。マイナスを含むTOP5とSite登録用JSONを出力します。ブラウザからの不足相場取得は引き続きチャットで行います。
+全件の一次判定は [バッチ処理](docs/batch-screening.md) を使います。保存済み一覧・相場から、算定済み／対象外／不足を全件記録し、不足条件をまとめて追加調査できます。車種重複なし・マイナスを含むTOP5とSite登録用JSONを出力します。ブラウザからの不足相場取得は引き続きチャットで行います。
 
 ## 調査結果と履歴
 
-[Site](https://auction-desk-prototype-261111.leafycycle4.chatgpt.site) のトップに調査履歴を表示します。日本時間の調査実行日で絞り込み、同じ日に複数回調べた場合も別の記録として残します。各記録は条件・案件・参考成約・保留理由・検索範囲とJSON/CSV出力を含みます。記録日時が残っていない過去ログは日付だけ表示し、時刻を補いません。
+[Site](https://auction-desk-prototype-261111.leafycycle4.chatgpt.site) のトップに最新の調査結果を、左カラムの履歴ページに過去の調査を表示します。日本時間の調査実行日で絞り込み、同じ日に複数回調べた場合も別の記録として残します。各記録は条件・案件・参考成約・保留理由・検索範囲とJSON/CSV出力を含みます。記録日時が残っていない過去ログは日付だけ表示し、時刻を補いません。
 
 チャットでの調査完了時に結果JSONを追加し、Siteを更新する運用です。記録はSiteの配信ファイルと専用ソースに永続保存され、ブラウザの保存領域を消しても失われません。一般コード用のこのGitHubには実際の会員データを格納しません。更新方法・形式は [運用手順](skills/auction-desk-poc/references/chat-history.md) と `web/history-model.js` を参照。
 
@@ -19,7 +19,7 @@ node scripts/archive-report.mjs REPORT.json SITE_CHECKOUT/dist/history
 
 **実装済み・実機PoC待ち**：拡張の実装、比較ロジックのテスト、Web接続画面を用意しています。拡張を実際のChromeに読み込んでの通し検証は未完了です。サイト側の画面変更や認証方式によって停止する可能性があります。停止時には理由を表示し、未取得データでランキングを作りません。
 
-## 最初の実行
+## 拡張PoCの最初の実行
 
 1. リポジトリをダウンロード・展開します。
 2. Chromeの拡張機能管理でデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」から `extension` を選びます。
@@ -29,7 +29,7 @@ node scripts/archive-report.mjs REPORT.json SITE_CHECKOUT/dist/history
 6. 関東／プリウス／上限100万円／TOP3で検索します。両社の価格基準が未確認なら価格差は保留になります。
 7. 検索中はSiteを開いたままにします。認証待ちなら開かれた検索用タブでログインし、Siteの「ログイン後に再開」を押します。
 
-## 対象と判断ルール
+## 拡張PoC限定の対象と判断ルール
 
 - TC-Web掲載の **TAA関東・JU神奈川** の出品と成約。JUナビ単独と関東全会場は対象外。
 - 車種はプリウス。任意で型式を追加できます（例 `プリウス ZVW50`）。商用車は対象外。
@@ -73,3 +73,6 @@ npm run package
 Siteの公開URLを変更する際は `manifest.json` の externally_connectable と `worker.js` の許可元、popup.htmlを同時に変更します。Chrome公式仕様：[Webページとのメッセージ通信](https://developer.chrome.com/docs/extensions/develop/concepts/messaging#external-webpage)、[スクリプト挿入](https://developer.chrome.com/docs/extensions/reference/api/scripting)。
 
 Google Sheetsへの自動登録はこの拡張には含みません。JSON/CSV出力、または同梱スキルと接続済みGoogle Driveを使う運用です。認証情報や実際の成約データはGitに追加しないでください。
+
+## 別Workへの移行
+[移行手順と依存関係](docs/portability.md) を参照。同梱の2スキルとバッチ処理がチャット調査の主経路です。
