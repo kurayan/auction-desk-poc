@@ -5,6 +5,7 @@ if(!archive&&location.hash.startsWith('#run='))location.replace('./archive.html'
 const text=(tag,value,cls)=>{const e=document.createElement(tag);e.textContent=value??'';if(cls)e.className=cls;return e};
 const yen=n=>n==null?'未算定':(n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万円';
 let runs=[],selected=null,request=0;
+const bySpread=items=>[...items].sort((a,b)=>(Number.isFinite(b.spread)?b.spread:-Infinity)-(Number.isFinite(a.spread)?a.spread:-Infinity));
 const range=(a,b)=>a==null?'未算定':a===b||b==null?yen(a):`${yen(a)} ～ ${yen(b)}`;
 async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(`記録を読み込めません (${r.status})`);return r.json()}
 function drawList(){
@@ -40,7 +41,7 @@ function renderReport(r){
  $('#limitations').replaceChildren(text('strong','記録上の未確認事項'));for(const l of r.limitations)$('#limitations').append(text('p',l));$('#limitations').hidden=!r.limitations.length;
  $('#candidateCount').textContent=`${r.candidates.length}件`;$('#candidates').replaceChildren();
  if(!r.candidates.length)$('#candidates').append(text('p','案件が確定していない調査記録です。','empty'));
- for(const c of r.candidates){
+ for(const c of bySpread(r.candidates)){
   const card=document.createElement('article');card.className='card';card.append(text('h3',`${c.rank?c.rank+'. ':''}${c.name}`),text('p',`${c.venue} / 出品番号 ${c.lot||'未記録'} / 開催日 ${c.auctionDate||'未記録'}`),text('p',`${c.vehicle||''} · ${c.km==null?'走行不明':(c.km/10000)+'万km'} · 評価 ${c.score||'未確認'}`),text('span',c.status,'badge'));
   if(c.sourceUrl){const a=text('a',`${c.name}の出品票を開く ↗`);a.href=c.sourceUrl;a.target='_blank';a.rel='noopener noreferrer';const p=text('p','');p.append(a,text('small','　TC-Webへのログインが必要です'));card.append(p)}
   if(c.estimate)card.append(text('p',c.estimate.note,'notice'));
@@ -66,5 +67,5 @@ function filterHistory(){const visible=runs.filter(r=>!$('#dateFilter').value||r
 if(archive){$('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{$('#dateFilter').value='';filterHistory()}}$('#refresh').onclick=load;
 function download(data,type,name){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('#json').onclick=()=>{if(selected)download(JSON.stringify(selected,null,2),'application/json',`${selected.id}.json`)};
-$('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','暫定仕入円','暫定売却円','暫定条件','出品票URL','理由'],...selected.candidates.map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.estimate?.buy,c.estimate?.sell,c.estimate?.note,c.sourceUrl,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
+$('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','暫定仕入円','暫定売却円','暫定条件','出品票URL','理由'],...bySpread(selected.candidates).map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.estimate?.buy,c.estimate?.sell,c.estimate?.note,c.sourceUrl,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
 load();
