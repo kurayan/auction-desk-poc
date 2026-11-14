@@ -8,7 +8,7 @@ test('all rows accounted for; negative spread ranked; budget uses estimate not s
  const r=screen(rows,comps(),cfg);assert.deepEqual(r.counts,{total:4,calculated:1,excluded:1,insufficient:2});assert.equal(r.top5[0].spread,-100000);assert.equal(r.top5[0].buy.median,900000);
 });
 test('zero and losses are ranked in descending order, maximum five; input unchanged',()=>{
- const lots=Array.from({length:7},(_,i)=>({...lot(String(i)),grade:String(i)}));const evidence=lots.flatMap((l,i)=>comps().map(c=>({...c,grade:l.grade,lot:`${l.id}-${c.lot}`,price:c.side==='buy'?900000:900000-i*10000})));
+ const lots=Array.from({length:7},(_,i)=>({...lot(String(i)),grade:String(i),name:['アクア','ノート','フィット','プリウス','セレナ','タント','シエンタ'][i]}));const evidence=lots.flatMap((l,i)=>comps().map(c=>({...c,grade:l.grade,lot:`${l.id}-${c.lot}`,price:c.side==='buy'?900000:900000-i*10000})));
  const r=screen(lots,evidence,cfg);assert.deepEqual(r.top5.map(r=>r.spread),[0,-10000,-20000,-30000,-40000]);assert.equal(lots[0].grade,'0');
 });
 test('duplicate, conflicting, stale, unsold and unknown identity evidence cannot qualify',()=>{
@@ -28,3 +28,5 @@ test('raw listing parse retains every row and mileage flags; ambiguous category 
  const data={observedAt:cfg.asOf,pages:[{page:1,rows:[row,[...row.slice(0,7),'50千km*',...row.slice(8)],['broken']]}]};
  const rows=parseListingCache(data,cfg.auctionDate);assert.equal(rows.length,3);assert.equal(rows[0].year,2018);assert.equal(rows[0].category,'passenger');assert.equal(rows[1].km,null);assert.ok(rows[2].parseError);assert.equal(classify('不明車種'),'unknown');
 });
+
+test('only highest spread per normalized vehicle name is ranked',()=>{const rows=[lot('1'),{...lot('2'),name:'ｱｸｱ'}, {...lot('3'),name:'ノート'}];const r=screen(rows,comps(),cfg);assert.equal(r.counts.calculated,3);assert.deepEqual(r.top5.map(x=>x.lot.id),['1','3']);});
