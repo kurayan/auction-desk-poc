@@ -5,6 +5,8 @@ description: Auction Deskのチャット調査・全件バッチ判定・Site履
 
 # Auction Desk
 
+V1 / 1.0.0。起動からの準備は [Ready手順](../uss-market-search/references/startup-ready.md) を参照し、3サイトの検索条件画面を確認する。
+
 主経路はチャットで調査を受け、結果を既存Siteに追記する方式。調査実行日別の履歴を残す。[チャット調査とSite記録](references/chat-history.md)を読んで保存・公開する。GPT APIは追加しない。Chromeの既存ログインセッションを使い、CISのUSBキー認証はユーザーのローカル環境で完了する。Cookie・パスワードをエクスポート、Git登録、Siteへ送信しない。
 
 ## 調査

@@ -1,4 +1,6 @@
-# 別Workへの移行（2026-11-14 仮確定）
+# 別Workへの移行（V1 / 1.0.0）
+
+2026-11-15版。[変更履歴](../CHANGELOG.md)と[Ready手順](../skills/uss-market-search/references/startup-ready.md)を参照。起動・認証手順は操作ツールで実行し、常駐ウィンドウの有無だけで失敗判定しない。
 
 ## 必要なもの
 リポジトリ全体をcloneし、Node.js 20以上を用意する（追加npm依存なし）。`skills/auction-desk-poc` と `skills/uss-market-search` を移行先のスキル保存先へ登録する。スキルを単独コピーしても判定コードは付属しないため、リポジトリの場所を移行先のチャットに伝える。文書内の `scripts/` `lib/` `web/` `docs/` はリポジトリルート基準。

@@ -1,5 +1,7 @@
 # Auction Desk
 
+**V1 / 1.0.0（2026-11-15）** — [変更履歴](CHANGELOG.md)。起動から検索直前までの[Ready手順](skills/uss-market-search/references/startup-ready.md)を含みます。
+
 **チャットで調査依頼 → ログイン済みChromeで取得 → プログラムで比較 → Siteで結果と履歴を閲覧**する中古車市場調査の仕組みです。特定車種の優先設定はありません。GPT API・APIキー・別サーバーは不要です。
 
 ## 現行の対象と判断ルール
@@ -17,7 +19,7 @@
 ## 最初の実行
 1. リポジトリ全体を取得し、Node.js 20以上を用意します。追加npm依存はありません。
 2. [移行手順](docs/portability.md)に従って同梱の2スキルを登録します。
-3. 利用するChromeでJU／TC-Web／CISへログインします。CISはローカルのUSBキーを接続し相場検索まで開きます。
+3. [Ready手順](skills/uss-market-search/references/startup-ready.md)でChrome・キー常駐を起動し、JU／TC-Web／CISの検索条件画面まで準備します。
 4. チャットで対象開催日・会場を指定して調査を依頼します。車種指定なしなら出品台数順で横断調査します。
 5. [バッチ処理](docs/batch-screening.md)で取得済み一覧と成約を照合し、不足相場を追加取得して再算定します。
 6. 上位案件の詳細・出品票を確認し、[Site記録手順](skills/auction-desk-poc/references/chat-history.md)で新しい履歴として公開します。
