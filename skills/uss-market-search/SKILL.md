@@ -5,6 +5,8 @@ description: Chromeでログイン済みのUSS・CISの過去落札情報を検�
 
 # USS 過去相場検索
 
+調査開始時と履歴保存後に、リポジトリ直下で `python scripts/market-db.py sync <Siteのdist/history> <非公開キャッシュディレクトリ>` を実行する。型式・車名で `python scripts/market-db.py find S321V` のように既存履歴を確認する。一括判定では `python scripts/market-db.py export market-cache/reuse.json` を実行し、そのファイルを screen-all.mjs の --cache に渡す。鮮度・成約状態・重複判定は既存の判定処理を通す。DB、実車データ、書き出し先は非公開で管理する。
+
 V1 / 1.0.0。起動・ログイン・Ready確認では [調査開始前の準備](references/startup-ready.md) を読む。準備だけの依頼では検索や公開に進まない。
 ## チャット依頼とSite履歴（現在の運用）
 

@@ -5,3 +5,4 @@ market-cache/
 .env*
 web/history/
 research-records/
+*.sqlite3*
