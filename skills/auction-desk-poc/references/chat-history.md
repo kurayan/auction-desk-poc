@@ -18,18 +18,17 @@ web/history-model.js の validateReport が形式を定義する。schemaVersion
 
 ## 公開手順
 
+この環境の公開先は https://auction-desk-market.persistentseahorse1.chatgpt.site （project_id: appgprj_6afd7e8c44608191a8db5518ed736978）。このSiteの既存履歴と公開範囲を維持する。
+
 1. Sitesの手順で既存Siteの取得・ソースopenを済ませる。既存Site IDと公開範囲を維持する。
 2. 調査結果JSONをGit管理外の作業用ファイルに保存する。
 3. 画面変更がある場合だけ `node scripts/sync-site.mjs SITE_CHECKOUT`。履歴フォルダはコピー元で上書きしない。
 4. `node scripts/archive-report.mjs REPORT.json SITE_CHECKOUT/dist/history`。同じIDの変更は拒否される。訂正は新しいIDで追加して訂正理由を書く。同一内容の再実行は重複しない。
 5. Sitesのsource helperで履歴を含めてcommit/push/packageし、既存Siteへdeployする。これがSite全体の更新単位。公開成功前は登録完了と言わない。
-6. 完了後 `https://SITE/#run=ID` を返す。古い記録を削除せず、件数が追加されていることを確認する。
+6. 公開成功後、調査用Chromeで `https://SITE/#run=ID` を開き、今回の調査タイトルと開催日を確認する。結果タブを開いたまま、同じURLをチャットに返す。通常の調査依頼にはここまで含め、毎回の追加確認は不要。古い記録を削除せず、件数が追加されていることを確認する。
 
 履歴はSiteの配信ファイルと専用ソースに保存される。ブラウザlocalStorageに依存しない。一般コード用のGitHubには実際の調査JSONをpushしない。Siteに任意のアップロード口やAPIキーを追加する必要はない。毎回のチャット作業で公開する方式であり、バックグラウンド自動調査ではない。
 
-## 現在の表示方針（2026-11-14訂正）
-同一車種の算定可能案件から最大差額の1台を選び、車種重複なしで差額が大きい順のTOP5（最大5件）を表示し、マイナスも含める。未算定は順位に入れず元の記録に保持する。履歴は消さず、取得日時付き相場は条件一致と鮮度を確認して再利用する。過去の出品を現在の仕入れ候補として混ぜない。表示順位は保存されたrankではなく差額から算出する。
+## 記録に残す範囲
 
-## 全件の一次判定
-
-一覧取得後は `scripts/screen-all.mjs` で全行処理する（形式・コマンドは `docs/batch-screening.md`）。5件を先に選んで全件判定を代用しない。全件台帳の算定済み・対象外・不足の合計を入力件数と照合する。`searchQueue` の重複条件をまとめて追加取得し、取得時刻と出品識別情報付きキャッシュへ追記して再実行する。未知区分や相場不足を利益なしと扱わない。Site用JSONは `--site-report` で生成できる。既存履歴の推定値を成約として数えず、原成約のみ再利用する。
+通常は[調査の終了条件](../SKILL.md)を満たした3車種を保存する。未調査分があれば「確認済み範囲のTOP3」と確認件数／総件数を明示する。全件バッチは `docs/batch-screening.md` の手順で全入力を判定し、`--site-report` の結果を保存する。既存履歴の推定値は成約件数に含めない。

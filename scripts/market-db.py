@@ -47,6 +47,7 @@ def main():
     ingest.add_argument("cache", type=Path)
     lookup = commands.add_parser("find")
     lookup.add_argument("term")
+    lookup.add_argument("--summary", action="store_true", help="Print match counts without individual records")
     export = commands.add_parser("export")
     export.add_argument("output", type=Path)
     args = parser.parse_args()
@@ -62,6 +63,13 @@ def main():
             sync(db, args.history, args.cache)
             for table in ("reports", "observations", "captures"):
                 print(table, db.execute(f"SELECT count(*) FROM {table}").fetchone()[0])
+        elif args.command == "find" and args.summary:
+            counts = {}
+            for table in ("reports", "captures", "observations"):
+                counts[table] = db.execute(
+                    f"SELECT count(*) FROM {table} WHERE instr(body, ?)", (args.term,)
+                ).fetchone()[0]
+            print(json.dumps(counts))
         elif args.command == "find":
             for day, key, body in db.execute("SELECT day,id,body FROM reports WHERE instr(body,?) ORDER BY day DESC", (args.term,)):
                 print(day, key, json.loads(body)["title"])
