@@ -1,0 +1,547 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-11-10-kanto-10lots",
+  "researchedOn": "2026-11-10",
+  "researchedAt": null,
+  "title": "関東・国産乗用車｜10案件の確認記録",
+  "status": "条件付き・追加確認あり",
+  "summary": "当時の保存済み10案件と参考成約を移行しました。表示順は当時の保存順です。確定した利益順位ではありません。",
+  "conditions": {
+    "エリア": "関東",
+    "対象": "国産乗用車・商用車除外",
+    "仕入れ上限": "100万円",
+    "出品開催日": "2026-11-12",
+    "価格差": "諸経費控除前・未算定"
+  },
+  "limitations": [
+    "参考成約には年式・距離・色・評価などの条件差があります。",
+    "仕入れ上限内の落札や利益を保証する記録ではありません。",
+    "実行時刻は元データに残っていないため、日付だけを保存しています。"
+  ],
+  "coverage": [
+    "当時の確認範囲：150 of 2338（保存元の記載）",
+    "出品：TAA関東・JU神奈川。参考成約の会場は各案件の根拠欄に記載。"
+  ],
+  "provenance": "11月10日調査の旧Site保存データから2026-11-12に履歴へ移行。追加調査・再査定はしていません。",
+  "candidates": [
+    {
+      "rank": null,
+      "name": "N-BOX G",
+      "venue": "TAA関東",
+      "lot": "53007",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2022／JF3／緑",
+      "km": 83000,
+      "score": "3.5 D/B",
+      "status": "条件付き優先",
+      "reason": "近似価格差あり。USS例は低走行・高評価。",
+      "nextAction": "同評価の売却例と出品票を追加確認",
+      "buyLow": 415000,
+      "buyHigh": 433000,
+      "sellLow": 540000,
+      "sellHigh": 540000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-17（原記録・年省略）",
+          "venue": "TAA横浜",
+          "lot": "03139",
+          "vehicle": "2022 N-BOX G 緑",
+          "km": 108000,
+          "score": "3.5 D/C",
+          "price": 415000,
+          "note": "レンタカー。候補83千km・内B"
+        },
+        {
+          "side": "仕入",
+          "date": "10-16（原記録・年省略）",
+          "venue": "アライベイサイド",
+          "lot": "60049",
+          "vehicle": "2022 N-BOX G 緑",
+          "km": 115310,
+          "score": "3.5 C/C",
+          "price": 433000,
+          "note": "レンタカー。距離・内装差"
+        },
+        {
+          "side": "売却",
+          "date": "11-07（原記録・年省略）",
+          "venue": "USS九州",
+          "lot": "82042",
+          "vehicle": "2022 N-BOX G D緑",
+          "km": 73000,
+          "score": "4/B",
+          "price": 540000,
+          "note": "候補より低走行・高評価"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "eKクロス T",
+      "venue": "TAA関東",
+      "lot": "23064",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2019／B35W／青",
+      "km": 23000,
+      "score": "4 C/B",
+      "status": "条件付き優先",
+      "reason": "両市場例あり。仕入例の距離が長い。",
+      "nextAction": "低走行の仕入成約を追加確認",
+      "buyLow": 569000,
+      "buyHigh": 569000,
+      "sellLow": 675000,
+      "sellHigh": 765000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-14（原記録・年省略）",
+          "venue": "MIRIVE埼玉",
+          "lot": "00332",
+          "vehicle": "2019 eKクロス T 青",
+          "km": 54292,
+          "score": "4 C/B",
+          "price": 569000,
+          "note": "候補23千km。距離差"
+        },
+        {
+          "side": "売却",
+          "date": "10-22（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "01274",
+          "vehicle": "2019 eKクロス T 黒",
+          "km": 28000,
+          "score": "4/B",
+          "price": 765000,
+          "note": "色差。装備・出品票未確認"
+        },
+        {
+          "side": "売却",
+          "date": "10-15（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "00940",
+          "vehicle": "2019 eKクロス T 赤 ナビ",
+          "km": 34000,
+          "score": "4.5/B",
+          "price": 675000,
+          "note": "色・評価・ナビ差"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "eKワゴン M",
+      "venue": "TAA関東",
+      "lot": "03071",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2021／B33W／白",
+      "km": 59000,
+      "score": "4 C/C",
+      "status": "条件付き優先",
+      "reason": "仕入45.3〜47.5万円例。売却例は状態が良い。",
+      "nextAction": "同評価・同距離の売却例を追加確認",
+      "buyLow": 453000,
+      "buyHigh": 475000,
+      "sellLow": 530000,
+      "sellHigh": 530000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "11-06（原記録・年省略）",
+          "venue": "JU宮城・秋田",
+          "lot": "06450",
+          "vehicle": "2021 eKワゴン M 白",
+          "km": 56373,
+          "score": "4.5 B/C",
+          "price": 475000,
+          "note": "候補4より評価良好"
+        },
+        {
+          "side": "仕入",
+          "date": "10-14（原記録・年省略）",
+          "venue": "MIRIVE埼玉",
+          "lot": "70102",
+          "vehicle": "2021 eKワゴン M 黒",
+          "km": 49276,
+          "score": "4 C/B",
+          "price": 453000,
+          "note": "色と内装差"
+        },
+        {
+          "side": "売却",
+          "date": "10-22（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "00527",
+          "vehicle": "2021 eKワゴン M 白",
+          "km": 42000,
+          "score": "4.5/B",
+          "price": 530000,
+          "note": "候補59千km・4/Cより良好"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "N-BOX L",
+      "venue": "TAA関東",
+      "lot": "03026",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2021／JF3／ピンク2",
+      "km": 43000,
+      "score": "4.5 B/B",
+      "status": "保留",
+      "reason": "仕入87万円例。売却の同色例は評価差大。",
+      "nextAction": "ピンク2・4.5の売却成約を追加確認",
+      "buyLow": 870000,
+      "buyHigh": 870000,
+      "sellLow": 515000,
+      "sellHigh": 915000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-30（原記録・年省略）",
+          "venue": "LAA岡山",
+          "lot": "01102",
+          "vehicle": "2021 N-BOX L ピンク ナビ",
+          "km": 41334,
+          "score": "4.5 B/B",
+          "price": 870000,
+          "note": "候補はピンク2・ナビ記載なし"
+        },
+        {
+          "side": "売却",
+          "date": "10-31（原記録・年省略）",
+          "venue": "HAA神戸",
+          "lot": "65082",
+          "vehicle": "2021 N-BOX L ピンク",
+          "km": 55000,
+          "score": "3.5/B",
+          "price": 515000,
+          "note": "候補43千km・4.5より低評価"
+        },
+        {
+          "side": "売却",
+          "date": "10-31（原記録・年省略）",
+          "venue": "HAA神戸",
+          "lot": "65036",
+          "vehicle": "2021 N-BOX L 黒 AW",
+          "km": 42000,
+          "score": "4.5/B",
+          "price": 915000,
+          "note": "色と装備差。同色予想へ転用不可"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "CX-5 XD Lパッケージ",
+      "venue": "TAA関東",
+      "lot": "30003",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2016／KE2FW／黒",
+      "km": 28000,
+      "score": "4 C/C",
+      "status": "保留",
+      "reason": "低走行の仕入例不足。100万円以内未確定。",
+      "nextAction": "低走行成約と機関・装備を確認",
+      "buyLow": 651000,
+      "buyHigh": 765000,
+      "sellLow": 705000,
+      "sellHigh": 705000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-14（原記録・年省略）",
+          "venue": "CAA中部",
+          "lot": "33183",
+          "vehicle": "2015 CX-5 XD L 黒 ナビ",
+          "km": 51000,
+          "score": "4 C/B",
+          "price": 765000,
+          "note": "候補2016・28千km。年式距離差"
+        },
+        {
+          "side": "仕入",
+          "date": "10-15（原記録・年省略）",
+          "venue": "TAA中部",
+          "lot": "00136",
+          "vehicle": "2016 CX-5 XD L 黒",
+          "km": 83000,
+          "score": "4 C/C",
+          "price": 651000,
+          "note": "候補28千kmとの差が大きい"
+        },
+        {
+          "side": "売却",
+          "date": "10-29（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "25598",
+          "vehicle": "2016 CX-5 XD L パール",
+          "km": 65000,
+          "score": "4/C",
+          "price": 705000,
+          "note": "候補黒28千kmとの差が大きい"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "CX-5 XDプロアクティブ",
+      "venue": "TAA関東",
+      "lot": "22165",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2015／KE2FW／パール",
+      "km": 48000,
+      "score": "4 C/C",
+      "status": "保留",
+      "reason": "仕入・売却例の年式、色、距離が違う。",
+      "nextAction": "同年パール・4万km台の売却成約を確認",
+      "buyLow": 558000,
+      "buyHigh": 627000,
+      "sellLow": 600000,
+      "sellHigh": 600000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-31（原記録・年省略）",
+          "venue": "TAA横浜",
+          "lot": "00269",
+          "vehicle": "2015 CX-5 XDプロアクティブ 赤",
+          "km": 39000,
+          "score": "3.5 D/C",
+          "price": 627000,
+          "note": "候補パール48千km・4/C"
+        },
+        {
+          "side": "仕入",
+          "date": "10-27（原記録・年省略）",
+          "venue": "CAA東京",
+          "lot": "30373",
+          "vehicle": "2015 CX-5 XDプロアクティブ パール",
+          "km": 92000,
+          "score": "4 C/C",
+          "price": 558000,
+          "note": "候補48千kmとの距離差"
+        },
+        {
+          "side": "売却",
+          "date": "10-16（原記録・年省略）",
+          "venue": "USS名古屋",
+          "lot": "53807",
+          "vehicle": "2016 CX-5 XDプロアクティブ 赤",
+          "km": 58000,
+          "score": "4/B",
+          "price": 600000,
+          "note": "年式・色・内装差"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "N-WGN G",
+      "venue": "JU神奈川",
+      "lot": "06286",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2023／JH3／黒",
+      "km": 89000,
+      "score": "3.5 C/B",
+      "status": "売却根拠不足",
+      "reason": "同会場の近似仕入2例。売却の同条件例なし。",
+      "nextAction": "同一車再出品か確認、USS期間を拡大",
+      "buyLow": 514000,
+      "buyHigh": 643000,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-15（原記録・年省略）",
+          "venue": "JU神奈川",
+          "lot": "06134",
+          "vehicle": "2023 N-WGN G 黒",
+          "km": 100013,
+          "score": "3.5 C/C",
+          "price": 643000,
+          "note": "レンタカー。候補内B・89千km"
+        },
+        {
+          "side": "仕入",
+          "date": "10-22（原記録・年省略）",
+          "venue": "JU神奈川",
+          "lot": "06341",
+          "vehicle": "2023 N-WGN G 黒",
+          "km": 87937,
+          "score": "3.5 C/B",
+          "price": 514000,
+          "note": "レンタカー。同一車再出品の可能性未確認"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "N-BOX L ナビ",
+      "venue": "TAA関東",
+      "lot": "23017",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2021／JF3／パール",
+      "km": 97000,
+      "score": "4 C/C",
+      "status": "保留",
+      "reason": "売却54〜84.5万円例は候補より低走行。",
+      "nextAction": "9万km台の両市場成約を追加確認",
+      "buyLow": 611000,
+      "buyHigh": 657000,
+      "sellLow": 540000,
+      "sellHigh": 845000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-22（原記録・年省略）",
+          "venue": "TAA関東",
+          "lot": "03012",
+          "vehicle": "2021 N-BOX L 銀",
+          "km": 82000,
+          "score": "4 C/C",
+          "price": 611000,
+          "note": "候補97千km・パール・ナビ"
+        },
+        {
+          "side": "仕入",
+          "date": "11-07（原記録・年省略）",
+          "venue": "JU岐阜",
+          "lot": "00226",
+          "vehicle": "2021 N-BOX L 黒 ナビ",
+          "km": 82000,
+          "score": "4.5/B",
+          "price": 657000,
+          "note": "色・評価・距離差"
+        },
+        {
+          "side": "売却",
+          "date": "10-13（原記録・年省略）",
+          "venue": "USS横浜",
+          "lot": "35175",
+          "vehicle": "2021 N-BOX L パール",
+          "km": 72000,
+          "score": "4.5/B",
+          "price": 540000,
+          "note": "候補97千km・4/Cより良好"
+        },
+        {
+          "side": "売却",
+          "date": "10-23（原記録・年省略）",
+          "venue": "USS埼玉",
+          "lot": "01020",
+          "vehicle": "2021 N-BOX L パール ナビ",
+          "km": 60000,
+          "score": "4/C",
+          "price": 845000,
+          "note": "候補97千kmとの距離差"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "CX-3 XD",
+      "venue": "TAA関東",
+      "lot": "30005",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2015／DK5FW／パール",
+      "km": 84000,
+      "score": "4 C/D",
+      "status": "見送り寄り",
+      "reason": "評価4の売却例48万円。候補は内装D。",
+      "nextAction": "内装Dの理由・機関状態を確認",
+      "buyLow": 655000,
+      "buyHigh": 655000,
+      "sellLow": 480000,
+      "sellHigh": 790000,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-17（原記録・年省略）",
+          "venue": "JU岐阜",
+          "lot": "60386",
+          "vehicle": "2015 CX-3 XD 赤 ナビ",
+          "km": 47000,
+          "score": "4/B",
+          "price": 655000,
+          "note": "候補84千km・パール・内D"
+        },
+        {
+          "side": "売却",
+          "date": "10-30（原記録・年省略）",
+          "venue": "USS大阪",
+          "lot": "20379",
+          "vehicle": "2015 CX-3 XD パール",
+          "km": 80000,
+          "score": "4/B",
+          "price": 480000,
+          "note": "候補内装Dに対しB"
+        },
+        {
+          "side": "売却",
+          "date": "10-22（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "55402",
+          "vehicle": "2015 CX-3 XD パール",
+          "km": 78000,
+          "score": "4.5/B",
+          "price": 790000,
+          "note": "評価差あり。高値を予想に採用しない"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "eKワゴン M",
+      "venue": "TAA関東",
+      "lot": "03011",
+      "auctionDate": "2026-11-12",
+      "vehicle": "2021／B33W／銀",
+      "km": 122000,
+      "score": "4 C/C",
+      "status": "近似根拠不足",
+      "reason": "12万km台の比較例が揃わない。",
+      "nextAction": "高走行の両市場成約を追加確認",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "仕入",
+          "date": "10-13（原記録・年省略）",
+          "venue": "TAA四国",
+          "lot": "74047",
+          "vehicle": "2021 eKワゴン M 銀",
+          "km": 73000,
+          "score": "3.5 D/D",
+          "price": 220000,
+          "note": "候補122千km・4/C。近似不十分・補助資料のみ"
+        },
+        {
+          "side": "売却",
+          "date": "10-22（原記録・年省略）",
+          "venue": "USS東京",
+          "lot": "00527",
+          "vehicle": "2021 eKワゴン M 白",
+          "km": 42000,
+          "score": "4.5/B",
+          "price": 530000,
+          "note": "距離差大。価格予想に採用不可・補助資料のみ"
+        }
+      ]
+    }
+  ]
+}

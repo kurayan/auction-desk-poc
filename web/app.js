@@ -36,10 +36,45 @@ function table(rows){
  wrap.append(t);return wrap;
 }
 function renderReport(r){
+ $('#candidateCount').closest('.sectionhead').querySelector('h2').firstChild.textContent='表示対象の案件 ';
+ $('#candidateCount').closest('.sectionhead').lastElementChild.textContent='差額の大きい順に最大5件・マイナス含む・未算定は除外';
+ document.querySelector('.hint').textContent='現在の表示はTOP5方式です。調査時の要約・条件は当時の記録として保存しています。過去の案件は開催日を確認してください。';
  if($('#latestResearchDate'))$('#latestResearchDate').textContent=`｜調査日 ${r.researchedOn.replaceAll('-','/')}（日本時間）`;
  $('#report').hidden=false;$('#reportTitle').textContent=r.title;$('#reportDate').textContent=`調査実行日 ${r.researchedOn}（日本時間） · ${r.status}`;$('#reportSummary').textContent='調査時の要約：'+r.summary;
  $('#conditions').replaceChildren();for(const [k,v] of Object.entries(r.conditions))$('#conditions').append(text('span',`${k==='表示'?'当時の表示条件':k}：${v}`));
  $('#limitations').replaceChildren(text('strong','記録上の未確認事項'));for(const l of r.limitations)$('#limitations').append(text('p',l));$('#limitations').hidden=!r.limitations.length;
+ if(r.kind==='purchase-search'){
+  document.querySelector('.hint').textContent='条件指定の仕入れ調査です。参考成約は当該車の落札予想とは異なります。開始価格で予算適合を判定していません。';
+  $('#candidateCount').closest('.sectionhead').querySelector('h2').firstChild.textContent='確認した出品案件 ';
+  $('#candidateCount').closest('.sectionhead').lastElementChild.textContent='条件適合・予算超過見込み・判定保留を区別';
+  $('#candidateCount').textContent=`${r.candidates.length}件`;
+  $('#candidates').replaceChildren();
+  for(const c of r.candidates){
+   const card=document.createElement('article');card.className='card';
+   card.append(text('h3',c.name),text('p',`${c.venue} / 出品番号 ${c.lot} / 開催日 ${c.auctionDate}`),text('p',`${c.vehicle} · ${c.km==null?'不明':(c.km/10000).toLocaleString('ja-JP')}万km · 評価 ${c.score}`),text('span',c.status,'badge'),text('p',c.reason),text('p',c.nextAction));
+   if(c.evidence.length){const detail=document.createElement('details');detail.append(text('summary',`出品情報・比較根拠 ${c.evidence.length}件`),table(c.evidence));card.append(detail)}
+   $('#candidates').append(card);
+  }
+  $('#coverage').replaceChildren();for(const s of r.coverage)$('#coverage').append(text('p',s));
+  $('#provenance').textContent=r.provenance||'';return;
+ }
+ if(r.kind==='valuation'){
+  const v=r.valuation;
+  document.querySelector('.hint').textContent='個別車両の落札価格予想です。成約実績と出品票の状態差を比較した暫定値です。';
+  $('#candidateCount').closest('.sectionhead').querySelector('h2').firstChild.textContent='落札価格予想 ';
+  $('#candidateCount').closest('.sectionhead').lastElementChild.textContent='中心値と想定レンジ';
+  $('#candidateCount').textContent='1件（個別予想）';
+  $('#candidates').replaceChildren();
+  const card=document.createElement('article');card.className='card';
+  card.append(text('h3',v.name),text('p',`${v.venue} / 出品番号 ${v.lot} / 開催日 ${v.auctionDate}`),text('p',`${v.vehicle} · ${(v.km/10000).toLocaleString('ja-JP')}万km · 評価 ${v.score}`),text('span',v.status,'badge'));
+  const metrics=document.createElement('div');metrics.className='metrics';
+  for(const [label,value] of [['予想中心',v.priceCenter],['予想下限',v.priceLow],['予想上限',v.priceHigh]]){const m=document.createElement('div');m.append(text('span',label),text('strong',yen(value)));metrics.append(m)}
+  card.append(metrics,text('p',v.reason));
+  const detail=document.createElement('details');detail.append(text('summary',`比較成約 ${v.evidence.length}件`),table(v.evidence));card.append(detail);$('#candidates').append(card);
+  $('#coverage').replaceChildren();for(const s of r.coverage)$('#coverage').append(text('p',s));
+  $('#provenance').textContent=r.provenance||'';
+  return;
+ }
  $('#candidateCount').textContent=`${visibleCandidates(r.candidates).length}件（調査済み ${r.candidates.length}件）`;$('#candidates').replaceChildren();
  if(!visibleCandidates(r.candidates).length)$('#candidates').append(text('p','差額を算定できた案件はありません。未算定・保留の範囲は、この記録の未確認事項と検索範囲・取得件数をご確認ください。','empty'));
  for(const [position,c] of visibleCandidates(r.candidates).entries()){
@@ -70,4 +105,11 @@ if(archive){$('#dateFilter').onchange=filterHistory;$('#allDates').onclick=()=>{
 function download(data,type,name){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('#json').onclick=()=>{if(selected)download(JSON.stringify(selected,null,2),'application/json',`${selected.id}.json`)};
 $('#csv').onclick=()=>{if(!selected)return;const rows=[['調査日','調査ID','会場','開催日','番号','車名','判定','仕入下限円','仕入上限円','売却下限円','売却上限円','差額円','暫定仕入円','暫定売却円','暫定条件','出品票URL','理由'],...visibleCandidates(selected.candidates).map(c=>[selected.researchedOn,selected.id,c.venue,c.auctionDate,c.lot,c.name,c.status,c.buyLow,c.buyHigh,c.sellLow,c.sellHigh,c.spread,c.estimate?.buy,c.estimate?.sell,c.estimate?.note,c.sourceUrl,c.reason])];const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`)};
+const exportDefaultCsv=$('#csv').onclick;
+$('#csv').onclick=()=>{
+ if(selected?.kind!=='purchase-search')return exportDefaultCsv();
+ const rows=[['調査日','会場','開催日','番号','車名','車両条件','走行km','評価','判定','理由','次の確認'],...selected.candidates.map(c=>[selected.researchedOn,c.venue,c.auctionDate,c.lot,c.name,c.vehicle,c.km,c.score,c.status,c.reason,c.nextAction])];
+ const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';
+ download('\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n'),'text/csv;charset=utf-8',`${selected.id}.csv`);
+};
 load();

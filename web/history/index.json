@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "runs": [
+    {"id":"2026-11-17-hijet-h20-s321v-270k","researchedOn":"2026-11-17","researchedAt":null,"archivedAt":"2026-11-17T10:03:27.079Z","title":"USS東京想定｜H20ハイゼット・S321V・27万kmの概算","status":"暫定中心15万円・低確度","candidateCount":1},
+    {"id":"2026-11-17-anycolor-keivan-100k","researchedOn":"2026-11-17","researchedAt":null,"archivedAt":"2026-11-17T09:50:22.785Z","title":"色指定なし軽バン｜10万円上限・暫定候補2台","status":"低確度の予算内狙い2台・上振れあり","candidateCount":2},
+    {
+      "id": "2026-11-17-black-kei-van-under100k",
+      "researchedOn": "2026-11-17",
+      "researchedAt": null,
+      "title": "黒い軽バン｜11/18以降・10万円以下の仕入れ調査",
+      "status": "予算内の有力候補未確認・2件保留",
+      "candidateCount": 12
+    },
+    {
+      "id": "2026-11-16-camroad-yokohama1118-30611",
+      "researchedOn": "2026-11-16",
+      "researchedAt": "2026-11-16T12:42:46.628Z",
+      "title": "USS横浜1118回・30611｜カムロード落札価格予想",
+      "status": "追加調査済み・低確度の暫定予想",
+      "candidateCount": 1
+    },
+    {
+      "id": "2026-11-16-voxy-tokyo1591-55086",
+      "researchedOn": "2026-11-16",
+      "researchedAt": "2026-11-16T06:58:05.831Z",
+      "title": "USS東京1591回・55086｜ヴォクシー落札価格予想",
+      "status": "11/19開催・未セリ・暫定予想",
+      "candidateCount": 1
+    },
+    {
+      "id": "batch-20261114120155111",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T12:01:55.111Z",
+      "title": "11月16日JU東京｜車種重複なし・暫定TOP5",
+      "status": "5車種横断・諸経費控除前の暫定比較",
+      "candidateCount": 5,
+      "archivedAt": "2026-11-14T12:04:23.375Z"
+    },
+    {
+      "id": "batch-20261114114041986",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T11:40:41.986Z",
+      "title": "関東・100万円以内｜追加相場による暫定順位4案件",
+      "status": "機械一次判定・出品票未確認",
+      "candidateCount": 4,
+      "archivedAt": "2026-11-14T11:48:04.856Z"
+    },
+    {
+      "id": "batch-20261114112143035",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T11:21:43.035Z",
+      "title": "2026-11-16開催｜保存済み一覧の全件一次判定",
+      "status": "機械一次判定・出品票未確認",
+      "candidateCount": 0,
+      "archivedAt": "2026-11-14T11:24:37.209Z"
+    },
+    {
+      "id": "2026-11-14-daily-one-day-trial",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T20:08:49.883072+09:00",
+      "title": "11/16 JU東京｜1日限定の軽量化テスト・一次比較",
+      "status": "一部比較済み・掲載候補0件",
+      "candidateCount": 5,
+      "archivedAt": "2026-11-14T11:09:03.589Z"
+    },
+    {
+      "id": "2026-11-14-kanto-provisional",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T07:54:34+09:00",
+      "title": "関東・100万円以内｜5案件の暫定試算・出品票",
+      "status": "暫定値あり：保留3件・見送り2件",
+      "candidateCount": 5,
+      "archivedAt": "2026-11-13T23:04:41.813411Z"
+    },
+    {
+      "id": "2026-11-14-kanto-review",
+      "researchedOn": "2026-11-14",
+      "researchedAt": "2026-11-14T07:54:34+09:00",
+      "title": "関東・100万円以内｜5案件の比較と見送り判断",
+      "status": "利幅順位は未成立：保留3件・見送り2件",
+      "candidateCount": 5
+    },
+    {
+      "id": "2026-11-13-kanto-interrupted",
+      "researchedOn": "2026-11-13",
+      "researchedAt": null,
+      "title": "関東・国産乗用車｜200件の一次調査",
+      "status": "中断記録：翌14日の調査へ継続",
+      "candidateCount": 0
+    },
+    {
+      "id": "2026-11-11-prius-connection",
+      "researchedOn": "2026-11-11",
+      "researchedAt": null,
+      "title": "関東・プリウス｜接続テストと3案件の確認",
+      "status": "接続成功・利幅順位は未確定",
+      "candidateCount": 3
+    },
+    {
+      "id": "2026-11-10-review-top5",
+      "researchedOn": "2026-11-10",
+      "researchedAt": null,
+      "title": "関東・国産車｜初回の検討5案件",
+      "status": "追加調査の優先順・利益順位ではない",
+      "candidateCount": 5
+    },
+    {
+      "id": "2026-11-10-kanto-10lots",
+      "researchedOn": "2026-11-10",
+      "researchedAt": null,
+      "title": "関東・国産乗用車｜10案件の確認記録",
+      "status": "条件付き・追加確認あり",
+      "candidateCount": 10
+    }
+  ]
+}

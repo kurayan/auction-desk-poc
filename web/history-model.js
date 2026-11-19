@@ -13,6 +13,16 @@ export function validateReport(r){
  for(const [k,v] of Object.entries(r.conditions)){string(k,'condition key',100);string(v,'condition value',1000)}
  for(const k of ['limitations','coverage']){if(!Array.isArray(r[k])||r[k].length>200)throw Error(`Invalid ${k}`);r[k].forEach(v=>string(v,k))}
  if(!Array.isArray(r.candidates)||r.candidates.length>200)throw Error('Invalid candidates');
+ if(r.kind!==undefined&&!['valuation','purchase-search'].includes(r.kind))throw Error('Invalid report kind');
+ if(r.kind==='valuation'){
+  const v=r.valuation;
+  if(!v||typeof v!=='object')throw Error('Invalid valuation');
+  for(const k of ['name','venue','lot','auctionDate','vehicle','score','status','reason'])string(v[k],k);
+  for(const k of ['km','priceLow','priceCenter','priceHigh'])money(v[k],k);
+  if(v.priceLow>v.priceCenter||v.priceCenter>v.priceHigh)throw Error('Invalid valuation range');
+  if(!Array.isArray(v.evidence)||!v.evidence.length)throw Error('Missing valuation evidence');
+  for(const e of v.evidence){for(const k of ['side','date','venue','lot','vehicle','score','note'])string(e[k],k);money(e.km,'km');money(e.price,'price')}
+ }
  for(const c of r.candidates){
   for(const k of ['name','venue','lot','auctionDate','vehicle','score','status','reason','nextAction'])string(c[k],k);
   if(c.sourceUrl!==undefined){const u=new URL(string(c.sourceUrl,'sourceUrl'));if(u.protocol!=='https:'||u.username||u.password)throw Error('Invalid source URL')}
@@ -24,9 +34,9 @@ export function validateReport(r){
   if(!Array.isArray(c.evidence)||c.evidence.length>1000)throw Error('Invalid evidence');
   for(const e of c.evidence){for(const k of ['side','date','venue','lot','vehicle','score','note'])string(e[k],k);money(e.price,'price');money(e.km,'km')}
  }
- const allowed=new Set(['schemaVersion','id','researchedOn','researchedAt','title','status','summary','conditions','limitations','coverage','candidates','provenance']);
+ const allowed=new Set(['schemaVersion','id','researchedOn','researchedAt','title','status','summary','conditions','limitations','coverage','candidates','provenance','kind','valuation']);
  if(Object.keys(r).some(k=>!allowed.has(k)))throw Error('Unexpected report field');
  return r;
 }
 export function sortRuns(runs){return [...runs].sort((a,b)=>b.researchedOn.localeCompare(a.researchedOn)||(Date.parse(b.researchedAt)||0)-(Date.parse(a.researchedAt)||0)||(Date.parse(b.archivedAt)||0)-(Date.parse(a.archivedAt)||0)||b.id.localeCompare(a.id))}
-export function summarize(r){return {id:r.id,researchedOn:r.researchedOn,researchedAt:r.researchedAt,title:r.title,status:r.status,candidateCount:r.candidates.length}}
+export function summarize(r){return {id:r.id,researchedOn:r.researchedOn,researchedAt:r.researchedAt,title:r.title,status:r.status,candidateCount:r.kind==='valuation'?1:r.candidates.length}}

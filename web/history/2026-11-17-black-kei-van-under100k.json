@@ -1,0 +1,430 @@
+{
+  "schemaVersion": 1,
+  "kind": "purchase-search",
+  "id": "2026-11-17-black-kei-van-under100k",
+  "researchedOn": "2026-11-17",
+  "researchedAt": null,
+  "title": "黒い軽バン｜11/18以降・10万円以下の仕入れ調査",
+  "status": "予算内の有力候補未確認・2件保留",
+  "summary": "関東・黒・8万～12万kmでCISの将来出品11件、TC-Web掲載の貨物軽バン1件を確認。現時点で落札予想10万円以下と裏付けられる候補はない。安値の可能性が残る現状車や旧車は、状態・相場の不確実性を理由に保留とした。",
+  "conditions": {
+    "地域": "関東（従来条件を継承）",
+    "出品日": "2026年11月18日以降、取得時に掲載された直近開催（11/18～11/21）",
+    "車種": "軽バン。軽乗用ワゴンは除外。CIS軽バン分類のストリートは登録区分要確認。",
+    "色": "黒（色替え含む）",
+    "走行": "8万～12万kmを「10万km程度」として採用",
+    "予算": "見通し落札価格10万円以下。税・手数料・陸送・修理等は別。",
+    "価格判定": "開始価格とコーナー名を予想価格として扱わない"
+  },
+  "limitations": [
+    "予算内候補が存在しないという市場全体の断定ではない。未掲載・情報更新後の車両、検索分類の漏れは含まない。",
+    "東京84009は出品票「無効」。埼玉46は修復歴あり・色替え・相場分散が大きく、いずれも価格判定保留。",
+    "個別の出品票確認は3件。他9件は一覧と相場の一次照合で、機関・故障記載や現車状態を未確認。",
+    "暫定価格レンジは統計的な保証区間ではない。比較成約の仕様差、地域差、税区分・諸費用を精査していない。",
+    "JUはTC-Web掲載のJU会場を調査。JUナビ本体との掲載差・独自出品は未照合。"
+  ],
+  "coverage": [
+    "CIS：USS全会場の黒・軽バン・8万～12万km一覧20件を確認し、当日以前4件・関東外5件を除外。関東の11/18以降11件を記録。",
+    "TC-Web：関東19会場の軽自動車＋商用バン、黒、8万～12万km、660cc以下を検索。134件全6ページを確認。過去・当日出品と軽乗用車を除いた将来の貨物軽バンはMIRIVE埼玉00274の1件。",
+    "TC-Webで確認した将来のアトレーワゴン90142（MIRIVE埼玉）とエブリイワゴン00038（JU千葉）は軽乗用ワゴンとして除外。",
+    "CIS相場：過去4開催の黒い軽バン・8万～12万kmの成約60件を取得。同一調査内で型式・仕様別に再利用。",
+    "追加相場：S320V全色・8万～12万kmの成約13行。HH4の検索は部分一致で他車も含むため、HH4実車の8行のみ参考確認。",
+    "出品票詳細確認：埼玉8099、東京84009、埼玉46の3件。相場検索3群を案件間で共有。Token消費の実測値なし。"
+  ],
+  "candidates": [
+    {
+      "rank": null,
+      "name": "ハイゼットカーゴ クルーズターボ",
+      "venue": "USS埼玉1381回",
+      "lot": "8099",
+      "auctionDate": "2026-11-20",
+      "vehicle": "H19/4・S320V・2WD・AT・黒",
+      "km": 108818,
+      "score": "3/C",
+      "status": "10万円超の見込み・低確度",
+      "reason": "暫定の落札目安は13万～20万円。S320V・8万～12万kmの成約13行は11.6万～24.6万円（同一車と思われる再出品を含む）。ターボ完全一致の比較なし。7万円MAXコーナーの表記を落札上限とは解釈しない。室内スレ汚れ、シート焦げ穴・付着、天張り汚れ、荷室傷汚れ、ホイールキャップ欠品、塗装剥げ、各傷凹み。修理費別。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-10-24",
+          "venue": "USS九州",
+          "lot": "90243",
+          "vehicle": "H19 ハイゼットカーゴ クルーズ S320V AT",
+          "km": 120000,
+          "score": "3/C",
+          "price": 128000,
+          "note": "白・ノンターボ。対象とは色・過給機・車検条件が異なる。"
+        },
+        {
+          "side": "比較成約",
+          "date": "2026-11-06",
+          "venue": "USS名古屋＆北陸",
+          "lot": "85073",
+          "vehicle": "H18 ハイゼットカーゴ クルーズ S320V AT",
+          "km": 100000,
+          "score": "3/C",
+          "price": 175000,
+          "note": "銀。ターボ・年式・色の差あり。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "ハイゼットカーゴ デラックス",
+      "venue": "USS東京1591回",
+      "lot": "84009",
+      "auctionDate": "2026-11-19",
+      "vehicle": "H29/2・S321V・2WD・5MT・黒",
+      "km": 111710,
+      "score": "***",
+      "status": "価格判定保留・出品票無効",
+      "reason": "ホワイトコーナー。出品票に大きく「無効」と表示され、検査員報告欄が空白。故障なしとは判断できない。10万円以内を裏付ける同条件成約は未確認。",
+      "nextAction": "有効な出品票・訂正情報、エンジン・変速機・空調の稼働確認まで予想価格を付けない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": []
+    },
+    {
+      "rank": null,
+      "name": "ストリート 4WD",
+      "venue": "USS埼玉1381回",
+      "lot": "46",
+      "auctionDate": "2026-11-20",
+      "vehicle": "H6・HH4・MT・ガンメタから黒へ色替え",
+      "km": 113950,
+      "score": "R/C",
+      "status": "価格判定保留・修復歴あり",
+      "reason": "左面修復歴、左Fピラー修正曲がり、塗装剥げ、内装スレ汚れ、荷室傷凹み、ホイールキャップ欠品。タイミングベルト交換済みステッカーあり（時期未確認）。HH4比較は2.5万～39万円と幅広く、10万円以下の有力候補とは断定しない。乗用仕様のため貨物登録の軽バン限定なら対象外。",
+      "nextAction": "登録区分・修復状態・機関の確認が必要。安値1件だけを採用しない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-11",
+          "venue": "USS札幌",
+          "lot": "418",
+          "vehicle": "H9 ストリート V 4WD HH4 5MT",
+          "km": 104000,
+          "score": "3/C",
+          "price": 25000,
+          "note": "緑2色。安値1件だけでは対象の10万円以内を裏付けられない。"
+        },
+        {
+          "side": "比較成約",
+          "date": "2026-10-31",
+          "venue": "USS岡山",
+          "lot": "8554",
+          "vehicle": "H8 ストリート V 4WD HH4 5MT",
+          "km": 108000,
+          "score": "R/C",
+          "price": 255000,
+          "note": "銀。修復歴ありでも25.5万円の成約。修復箇所の同等性は未確認。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "NV100クリッパー 4WD GX",
+      "venue": "MIRIVE埼玉（TC-Web）",
+      "lot": "00274",
+      "auctionDate": "2026-11-18",
+      "vehicle": "H31/3・DR17V・5MT・黒",
+      "km": 90000,
+      "score": "3.5/C/C",
+      "status": "10万円超の見込み",
+      "reason": "近いGXの黒・9万km台成約は30万円、4WDの別仕様は42万円。開始7万円は予想に使用せず、予算適合候補から外した。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-13",
+          "venue": "USS埼玉",
+          "lot": "1171",
+          "vehicle": "R2 NV100クリッパー GX DR17V 5MT",
+          "km": 94000,
+          "score": "3.5/B",
+          "price": 300000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        },
+        {
+          "side": "比較成約",
+          "date": "2026-10-22",
+          "venue": "USS東京",
+          "lot": "3185",
+          "vehicle": "R1 NV100クリッパー GX 4WD DR17V AT",
+          "km": 88000,
+          "score": "R/C",
+          "price": 420000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "アトレー 4WD RS",
+      "venue": "USS東京",
+      "lot": "3091",
+      "auctionDate": "2026-11-19",
+      "vehicle": "R4・S710V・AT・黒",
+      "km": 83000,
+      "score": "4.5/B",
+      "status": "10万円以下の根拠なし",
+      "reason": "同世代S710Vの別車種ハイゼットカーゴは85万円。RS完全一致の算定は未実施。低予算候補として優先しない。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-10-30",
+          "venue": "USS名古屋＆北陸",
+          "lot": "55510",
+          "vehicle": "R6 ハイゼットカーゴ4WD クルーズ S710V",
+          "km": 98000,
+          "score": "3.5/B",
+          "price": 850000,
+          "note": "車種・年式・グレードが違う参考情報。予想価格には転用していない。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "ハイゼットカーゴ クルーズターボ",
+      "venue": "USS東京",
+      "lot": "3303",
+      "auctionDate": "2026-11-19",
+      "vehicle": "R4・S700V・AT・黒",
+      "km": 105000,
+      "score": "4/B",
+      "status": "10万円超の見込み",
+      "reason": "同年式・型式のノンターボ成約59万円。ターボ差は未補正だが10万円以内の裏付けなし。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-06",
+          "venue": "USS名古屋＆北陸",
+          "lot": "55481",
+          "vehicle": "R4 ハイゼットカーゴ クルーズ S700V",
+          "km": 96000,
+          "score": "4/B",
+          "price": 590000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "NV100クリッパー DX GLセーフティPG",
+      "venue": "USS東京",
+      "lot": "3156",
+      "auctionDate": "2026-11-19",
+      "vehicle": "R3・DR17V・AT・黒",
+      "km": 81000,
+      "score": "4/C",
+      "status": "10万円以下の根拠なし",
+      "reason": "H31 DX GLエマブレPGの8.1万km・3点でも14.5万円。完全一致の予測は未実施。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-10-27",
+          "venue": "USS横浜",
+          "lot": "62172",
+          "vehicle": "H31 NV100クリッパー DX GLエマブレPG DR17V",
+          "km": 81000,
+          "score": "3/C",
+          "price": 145000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "エブリイ ジョイン",
+      "venue": "USS東京",
+      "lot": "3107",
+      "auctionDate": "2026-11-19",
+      "vehicle": "R3・DA17V・AT・黒",
+      "km": 99000,
+      "score": "3.5/B",
+      "status": "10万円超の見込み",
+      "reason": "同年式・近距離のPC修復歴あり成約27万円。グレード差・状態差は未補正。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-03",
+          "venue": "USS-R名古屋",
+          "lot": "100",
+          "vehicle": "R3 エブリイ PC DA17V AT",
+          "km": 101000,
+          "score": "R/B",
+          "price": 270000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "ハイゼットカーゴ クルーズSA3",
+      "venue": "USS東京",
+      "lot": "3183",
+      "auctionDate": "2026-11-19",
+      "vehicle": "R2・S321V・AT・黒",
+      "km": 107000,
+      "score": "4/B",
+      "status": "10万円超の見込み",
+      "reason": "同年式のデラックスSA3・修復歴ありで32万円。10万円以内の根拠なし。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-10-24",
+          "venue": "USS九州",
+          "lot": "90379",
+          "vehicle": "R2 ハイゼットカーゴ デラックスSA3 S321V AT",
+          "km": 94000,
+          "score": "R/C",
+          "price": 320000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "エブリイ ジョインターボ4WD",
+      "venue": "USS群馬",
+      "lot": "1517",
+      "auctionDate": "2026-11-21",
+      "vehicle": "H28・DA17V・AT・黒",
+      "km": 97000,
+      "score": "3.5/C",
+      "status": "10万円超の見込み",
+      "reason": "同年式・同グレード・4WDの5MT成約36万円。変速機・地域差は未補正。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-04",
+          "venue": "USS札幌",
+          "lot": "75116",
+          "vehicle": "H28 エブリイ ジョインターボ4WD DA17V 5MT",
+          "km": 93000,
+          "score": "3.5/B",
+          "price": 360000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "NV100クリッパー GXターボ",
+      "venue": "USS東京",
+      "lot": "3301",
+      "auctionDate": "2026-11-19",
+      "vehicle": "H26・DR64V・AT・黒",
+      "km": 106000,
+      "score": "4/C",
+      "status": "10万円以下の根拠なし",
+      "reason": "同年式・型式・ターボの4WD現状車で22.2万円。駆動と状態差があり個別価格は未算定。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-11-04",
+          "venue": "USS東北",
+          "lot": "9008",
+          "vehicle": "H26 NV100クリッパー GXターボ4WD DR64V AT",
+          "km": 93000,
+          "score": "***",
+          "price": 222000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    },
+    {
+      "rank": null,
+      "name": "ハイゼットカーゴ クルーズ",
+      "venue": "USS東京",
+      "lot": "3230",
+      "auctionDate": "2026-11-19",
+      "vehicle": "H25・S321V・AT・黒",
+      "km": 107000,
+      "score": "4/C",
+      "status": "10万円以下の根拠なし",
+      "reason": "H28同型クルーズ・11.2万kmで22.4万円。年式差3年は未補正。10万円以下を示す近似成約なし。",
+      "nextAction": "入札前に現車・出品票と最新情報を確認。開始価格は予想に採用していない。",
+      "buyLow": null,
+      "buyHigh": null,
+      "sellLow": null,
+      "sellHigh": null,
+      "spread": null,
+      "evidence": [
+        {
+          "side": "比較成約",
+          "date": "2026-10-27",
+          "venue": "USS横浜",
+          "lot": "62414",
+          "vehicle": "H28 ハイゼットカーゴ クルーズ S321V AT",
+          "km": 112000,
+          "score": "4/C",
+          "price": 224000,
+          "note": "黒・8万～12万kmのUSS成約。仕様差があるため予想値とは区別。"
+        }
+      ]
+    }
+  ],
+  "provenance": "2026年11月17日、日本時間にログイン済みChromeのCIS・TC-Web画面で確認。新規条件調査として追加。既存履歴と共有範囲を維持。"
+}
